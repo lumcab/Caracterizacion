@@ -535,7 +535,7 @@
         </div>
 
         <!-- SECCIÓN DE CONFIGURACIÓN -->
-        <div class="config-section" id="configSection">
+        <div class="config-section" id="configSection" style="display: none;">
             <h3>⚙️ Configuración Inicial - Google Sheets</h3>
             <p><strong>Para que el formulario funcione, debe configurar Google Sheets:</strong></p>
             <ol>
@@ -568,6 +568,7 @@
             <input type="text" id="searchDoc" placeholder="🔍 Buscar por Nº de Documento..." />
             <button class="btn-search" onclick="buscarEstudiante()">🔍 Buscar</button>
             <button class="btn-new" onclick="nuevoRegistro()">➕ Nuevo</button>
+            <button class="btn-search" style="background: #6c757d;" onclick="toggleConfig()">⚙️ Configuración</button>
         </div>
 
         <div class="stats">
@@ -1072,8 +1073,23 @@
                 document.getElementById('scriptURL').value = savedURL;
                 document.getElementById('statusText').textContent = 'Configurado';
                 document.getElementById('connectionStatus').classList.add('connected');
+                // Ocultar configuración si ya está configurada
+                document.getElementById('configSection').style.display = 'none';
+            } else {
+                // Mostrar configuración si NO está configurada
+                document.getElementById('configSection').style.display = 'block';
             }
         });
+
+        // Función para mostrar/ocultar configuración
+        function toggleConfig() {
+            const configSection = document.getElementById('configSection');
+            if (configSection.style.display === 'none') {
+                configSection.style.display = 'block';
+            } else {
+                configSection.style.display = 'none';
+            }
+        }
 
         // Guardar URL de Google Script
         function guardarURL() {
@@ -1089,8 +1105,13 @@
             }
 
             localStorage.setItem('googleScriptURL', url);
-            showAlert('✅ URL guardada correctamente', 'success');
+            showAlert('✅ URL guardada correctamente. La configuración se ocultará.', 'success');
             document.getElementById('statusText').textContent = 'Configurado';
+            
+            // Ocultar configuración después de guardar
+            setTimeout(() => {
+                document.getElementById('configSection').style.display = 'none';
+            }, 2000);
         }
 
         // Probar conexión con Google Sheets
