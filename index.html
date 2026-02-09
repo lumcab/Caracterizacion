@@ -44,43 +44,6 @@
             opacity: 0.9;
         }
 
-        .config-section {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-        }
-
-        .config-section h3 {
-            color: #856404;
-            margin-bottom: 15px;
-        }
-
-        .config-section code {
-            background: #fff;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #d63384;
-        }
-
-        .config-section ol {
-            margin-left: 20px;
-            line-height: 1.8;
-        }
-
-        .config-section .btn-config {
-            background: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
         .toolbar {
             background: #f8f9fa;
             padding: 15px 30px;
@@ -534,41 +497,10 @@
             </p>
         </div>
 
-        <!-- SECCIÓN DE CONFIGURACIÓN -->
-        <div class="config-section" id="configSection" style="display: none;">
-            <h3>⚙️ Configuración Inicial - Google Sheets</h3>
-            <p><strong>Para que el formulario funcione, debe configurar Google Sheets:</strong></p>
-            <ol>
-                <li>Abra <a href="https://sheets.google.com" target="_blank">Google Sheets</a> y cree una nueva hoja</li>
-                <li>Vaya a <strong>Extensiones → Apps Script</strong></li>
-                <li>Pegue el código que está más abajo (en el archivo <code>codigo_google_apps_script.gs</code>)</li>
-                <li>Haga clic en <strong>Implementar → Nueva implementación</strong></li>
-                <li>Tipo: <strong>Aplicación web</strong></li>
-                <li>Ejecutar como: <strong>Yo</strong></li>
-                <li>Quién tiene acceso: <strong>Cualquier persona</strong></li>
-                <li>Copie la <strong>URL de implementación</strong> que aparece</li>
-                <li>Pegue la URL en el campo de abajo:</li>
-            </ol>
-            
-            <div style="margin-top: 15px;">
-                <input type="text" id="scriptURL" placeholder="Pegue aquí la URL de Google Apps Script" 
-                       style="width: 100%; padding: 10px; border: 2px solid #ffc107; border-radius: 6px;">
-                <button class="btn-config" onclick="guardarURL()">💾 Guardar Configuración</button>
-                <button class="btn-config" style="background: #17a2b8;" onclick="probarConexion()">🔌 Probar Conexión</button>
-            </div>
-
-            <div style="margin-top: 15px; padding: 10px; background: #fff; border-radius: 6px;">
-                <strong>Estado de conexión:</strong> 
-                <span class="connection-status" id="connectionStatus"></span>
-                <span id="statusText">No configurado</span>
-            </div>
-        </div>
-
         <div class="toolbar">
             <input type="text" id="searchDoc" placeholder="🔍 Buscar por Nº de Documento..." />
             <button class="btn-search" onclick="buscarEstudiante()">🔍 Buscar</button>
             <button class="btn-new" onclick="nuevoRegistro()">➕ Nuevo</button>
-            <button class="btn-search" style="background: #6c757d;" onclick="toggleConfig()">⚙️ Configuración</button>
         </div>
 
         <div class="stats">
@@ -1057,6 +989,12 @@
     </div>
 
     <script>
+        // ============================================
+        // CONFIGURACIÓN PERMANENTE
+        // ============================================
+        // URL de Google Apps Script (ya configurada)
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZUnnhCw5KiCK1lvPFrTEKkR_JdPNa5Srig6cPA4wccN9uQWuBNBoA_IhY4uYNhBcLag/exec';
+        
         // Variables globales
         let currentSection = 1;
         const totalSections = 3;
@@ -1066,83 +1004,11 @@
         const submitBtn = document.getElementById('submitBtn');
         let contadorRegistros = 0;
 
-        // Cargar URL guardada
+        // Cargar URL guardada y ocultar configuración siempre
         window.addEventListener('load', () => {
-            const savedURL = localStorage.getItem('googleScriptURL');
-            if (savedURL) {
-                document.getElementById('scriptURL').value = savedURL;
-                document.getElementById('statusText').textContent = 'Configurado';
-                document.getElementById('connectionStatus').classList.add('connected');
-                // Ocultar configuración si ya está configurada
-                document.getElementById('configSection').style.display = 'none';
-            } else {
-                // Mostrar configuración si NO está configurada
-                document.getElementById('configSection').style.display = 'block';
-            }
+            // La URL ya está hardcodeada en el código como GOOGLE_SCRIPT_URL
+            // No se necesita configuración manual
         });
-
-        // Función para mostrar/ocultar configuración
-        function toggleConfig() {
-            const configSection = document.getElementById('configSection');
-            if (configSection.style.display === 'none') {
-                configSection.style.display = 'block';
-            } else {
-                configSection.style.display = 'none';
-            }
-        }
-
-        // Guardar URL de Google Script
-        function guardarURL() {
-            const url = document.getElementById('scriptURL').value.trim();
-            if (!url) {
-                showAlert('⚠️ Por favor ingrese la URL de Google Apps Script', 'danger');
-                return;
-            }
-            
-            if (!url.includes('script.google.com')) {
-                showAlert('⚠️ La URL no parece ser de Google Apps Script', 'danger');
-                return;
-            }
-
-            localStorage.setItem('googleScriptURL', url);
-            showAlert('✅ URL guardada correctamente. La configuración se ocultará.', 'success');
-            document.getElementById('statusText').textContent = 'Configurado';
-            
-            // Ocultar configuración después de guardar
-            setTimeout(() => {
-                document.getElementById('configSection').style.display = 'none';
-            }, 2000);
-        }
-
-        // Probar conexión con Google Sheets
-        function probarConexion() {
-            const url = localStorage.getItem('googleScriptURL');
-            if (!url) {
-                showAlert('⚠️ Primero debe guardar la URL de Google Apps Script', 'danger');
-                return;
-            }
-
-            document.getElementById('loadingIndicator').classList.add('show');
-
-            fetch(url + '?action=test')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('loadingIndicator').classList.remove('show');
-                    if (data.result === 'success') {
-                        showAlert('✅ Conexión exitosa con Google Sheets', 'success');
-                        document.getElementById('connectionStatus').classList.add('connected');
-                        document.getElementById('statusText').textContent = 'Conectado';
-                    } else {
-                        throw new Error('Error en la conexión');
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('loadingIndicator').classList.remove('show');
-                    showAlert('❌ Error de conexión. Verifique la URL y los permisos', 'danger');
-                    document.getElementById('connectionStatus').classList.remove('connected');
-                    document.getElementById('statusText').textContent = 'Error de conexión';
-                });
-        }
 
         // Cálculo automático de edad
         document.getElementById('fechaNacimiento').addEventListener('change', function() {
@@ -1181,15 +1047,9 @@
                 return;
             }
 
-            const url = localStorage.getItem('googleScriptURL');
-            if (!url) {
-                showAlert('⚠️ Configure primero la conexión con Google Sheets', 'danger');
-                return;
-            }
-
             document.getElementById('loadingIndicator').classList.add('show');
 
-            fetch(url + '?action=search&doc=' + docBusqueda)
+            fetch(GOOGLE_SCRIPT_URL + '?action=search&doc=' + docBusqueda)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('loadingIndicator').classList.remove('show');
@@ -1302,12 +1162,6 @@
             
             if (!validateCurrentSection()) return;
 
-            const url = localStorage.getItem('googleScriptURL');
-            if (!url) {
-                showAlert('⚠️ Configure primero la conexión con Google Sheets', 'danger');
-                return;
-            }
-
             const formData = new FormData(form);
             const estudiante = {};
             
@@ -1319,8 +1173,8 @@
 
             document.getElementById('loadingIndicator').classList.add('show');
 
-            // Enviar a Google Sheets
-            fetch(url, {
+            // Enviar a Google Sheets usando la URL configurada
+            fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
