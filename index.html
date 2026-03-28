@@ -1,478 +1,365 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caracterización Estudiante y Familiar</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caracterización POE - Estudiantes y Familias</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Formulario de Caracterización POE</h1>
-            <p>Encuesta oficial de la Secretaría de Educación del Huila. La información diligenciada y almacenada se utiliza para la caracterización del sector educativo y para orientar acciones de mejoramiento de la calidad educativa, el acompañamiento pedagógico y la participación de las familias.</p>
-            <span class="chip">☁️ Guardado en Google Sheets (archivo en la nube existente)</span>
-        </div>
+  <main class="app-shell">
+    <header class="hero">
+      <h1>Formulario de Caracterización POE</h1>
+      <p>
+        Encuesta oficial de la Secretaría de Educación del Huila. La información diligenciada se usa para
+        caracterización educativa, acompañamiento pedagógico y fortalecimiento del vínculo familia-escuela.
+      </p>
+      <span class="hero-chip">Base de datos: Google Sheets (nube institucional)</span>
+    </header>
 
-        <div class="toolbar">
-            <input type="text" id="searchDoc" placeholder="Buscar por número de documento" />
-            <button class="btn-search" type="button" id="searchBtn">Buscar</button>
-            <button class="btn-new" type="button" id="newBtn">Nuevo Registro</button>
-        </div>
+    <section class="toolbar" aria-label="Acciones rápidas">
+      <input class="field" type="text" id="searchDoc" placeholder="Buscar por número de documento">
+      <button class="btn btn-primary" type="button" id="searchBtn">Buscar</button>
+      <button class="btn btn-warn" type="button" id="newBtn">Nuevo Registro</button>
+    </section>
 
-        <div class="stats">
-            <div class="stats-item">Registros en la base (Drive): <strong id="totalEstudiantes">-</strong></div>
-            <div class="stats-item">Último registro/cambio en la base: <strong id="ultimaActualizacion">-</strong></div>
-            <div class="stats-item">Conexión: <strong id="conexionEstado">Lista</strong></div>
-        </div>
+    <section class="stats" aria-label="Resumen de base de datos">
+      <div class="stat-card">Registros en la base: <strong id="totalEstudiantes">-</strong></div>
+      <div class="stat-card">Último registro/cambio: <strong id="ultimaActualizacion">-</strong></div>
+      <div class="stat-card">Estado de conexión: <strong id="conexionEstado">Lista</strong></div>
+    </section>
 
-        <div class="progress-bar">
-            <div class="progress-step active" data-step="1">
-                <span class="step-circle">1</span>
-                <span>Datos del estudiante</span>
+    <section class="progress" aria-label="Progreso del formulario">
+      <div class="progress-track">
+        <article class="progress-item active"><span class="step-badge">1</span> Datos del estudiante</article>
+        <article class="progress-item"><span class="step-badge">2</span> Académico y socioemocional</article>
+        <article class="progress-item"><span class="step-badge">3</span> Módulo familiar</article>
+      </div>
+    </section>
+
+    <section class="form-wrapper">
+      <div id="alertContainer"></div>
+
+      <div class="loading" id="loadingIndicator">
+        <div class="spinner"></div>
+        <p style="margin-top:10px;">Guardando información...</p>
+      </div>
+
+      <form id="caracterizacionForm" novalidate>
+        <section class="form-section active" id="sec-personal">
+          <h2 class="section-title">Datos Personales del Estudiante</h2>
+          <div class="info-box">Completa los campos obligatorios. La edad se calcula automáticamente.</div>
+
+          <article class="subsection">
+            <h3>Identificación y Datos Básicos</h3>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">Tipo de documento</label>
+                <select class="select" name="tipoDocumento" required>
+                  <option value="">Seleccione...</option>
+                  <option value="TI">Tarjeta de Identidad</option>
+                  <option value="CC">Cédula de Ciudadanía</option>
+                  <option value="NUIP">NUIP</option>
+                  <option value="CE">Cédula de Extranjería</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="required">Número de documento</label>
+                <input class="field" type="text" name="numeroDocumento" required placeholder="Ej: 1234567890">
+              </div>
             </div>
-            <div class="progress-step" data-step="2">
-                <span class="step-circle">2</span>
-                <span>Académico y socioemocional</span>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">Nombres</label>
+                <input class="field" type="text" name="nombres" required>
+              </div>
+              <div class="form-group">
+                <label class="required">Apellidos</label>
+                <input class="field" type="text" name="apellidos" required>
+              </div>
             </div>
-            <div class="progress-step" data-step="3">
-                <span class="step-circle">3</span>
-                <span>Módulo familiar</span>
+
+            <div class="grid-3">
+              <div class="form-group">
+                <label class="required">Fecha de nacimiento</label>
+                <input class="field" type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+              </div>
+              <div class="form-group">
+                <label class="required">Edad</label>
+                <input class="field" type="number" id="edad" name="edad" readonly required>
+              </div>
+              <div class="form-group">
+                <label class="required">Sexo</label>
+                <select class="select" name="sexo" required>
+                  <option value="">Seleccione...</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                </select>
+              </div>
             </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">País de nacimiento</label>
+                <input class="field" type="text" name="paisNacimiento" value="Colombia" required>
+              </div>
+              <div class="form-group">
+                <label class="required">Nacionalidad</label>
+                <input class="field" type="text" name="nacionalidad" value="Colombiana" required>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">Municipio de residencia</label>
+                <input class="field" type="text" name="municipioResidencia" required>
+              </div>
+              <div class="form-group">
+                <label class="required">Barrio / Vereda / Comuna / Resguardo</label>
+                <input class="field" type="text" name="barrioVereda" required>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">Teléfono del acudiente</label>
+                <input class="field" type="tel" name="telefonoAcudiente" required>
+              </div>
+              <div class="form-group">
+                <label class="required">Lengua principal</label>
+                <input class="field" type="text" name="lenguaPrincipal" value="Español" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Lengua secundaria</label>
+              <input class="field" type="text" name="lenguaSecundaria">
+            </div>
+          </article>
+
+          <article class="subsection">
+            <h3>Étnia, Salud y Entorno</h3>
+            <div class="form-group">
+              <label class="required">¿Pertenece a comunidad étnica?</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="radio" name="perteneceEtnia" value="Si" required> Sí</label>
+                <label class="radio-pill"><input type="radio" name="perteneceEtnia" value="No" required> No</label>
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="tipoEtniaGroup">
+              <label>Tipo de étnia</label>
+              <select class="select" name="tipoEtnia">
+                <option value="">Seleccione...</option>
+                <option value="Indigena">Indígena</option>
+                <option value="Afrodescendiente">Afrodescendiente</option>
+                <option value="Raizal">Raizal</option>
+                <option value="Palenquero">Palenquero</option>
+                <option value="Gitano">Gitano/ROM</option>
+              </select>
+            </div>
+
+            <div class="form-group hidden" id="puebloIndigenaGroup">
+              <label>Si es indígena, mencione pueblo o resguardo</label>
+              <input class="field" type="text" name="puebloIndigena">
+            </div>
+
+            <div class="form-group">
+              <label class="required">¿Tiene discapacidad?</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="radio" name="tieneDiscapacidad" value="Si" required> Sí</label>
+                <label class="radio-pill"><input type="radio" name="tieneDiscapacidad" value="No" required> No</label>
+              </div>
+            </div>
+
+            <div class="form-group hidden" id="categoriaDiscapacidadGroup">
+              <label>Categoría de discapacidad</label>
+              <select class="select" name="categoriaDiscapacidad">
+                <option value="">Seleccione...</option>
+                <option value="Fisica">Física</option>
+                <option value="Visual">Visual</option>
+                <option value="Auditiva">Auditiva</option>
+                <option value="Cognitiva">Cognitiva</option>
+                <option value="Psicosocial">Psicosocial</option>
+                <option value="Multiple">Múltiple</option>
+                <option value="Otra">Otra</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="required">¿Está afiliado(a) al sistema de salud?</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="radio" name="afiliadoSalud" value="Si" required> Sí</label>
+                <label class="radio-pill"><input type="radio" name="afiliadoSalud" value="No" required> No</label>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">Institución educativa</label>
+                <input class="field" type="text" name="institucionEducativa" required>
+              </div>
+              <div class="form-group">
+                <label class="required">Grado escolar</label>
+                <select class="select" name="gradoEscolar" required>
+                  <option value="">Seleccione...</option>
+                  <option value="Transición">Transición</option>
+                  <option value="1">Primero</option>
+                  <option value="2">Segundo</option>
+                  <option value="3">Tercero</option>
+                  <option value="4">Cuarto</option>
+                  <option value="5">Quinto</option>
+                  <option value="6">Sexto</option>
+                  <option value="7">Séptimo</option>
+                  <option value="8">Octavo</option>
+                  <option value="9">Noveno</option>
+                  <option value="10">Décimo</option>
+                  <option value="11">Once</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="required">Tipo de vivienda</label>
+                <select class="select" name="tipoVivienda" required>
+                  <option value="">Seleccione...</option>
+                  <option value="Casa">Casa</option>
+                  <option value="Apartamento">Apartamento</option>
+                  <option value="Cuarto">Cuarto</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="required">¿La vivienda cuenta con servicios básicos?</label>
+                <select class="select" name="serviciosBasicos" required>
+                  <option value="">Seleccione...</option>
+                  <option value="Si">Sí</option>
+                  <option value="No">No</option>
+                  <option value="Parcial">Parcial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Factores de riesgo en el territorio</label>
+              <textarea class="textarea" name="factoresRiesgoTerritorio"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Factores de riesgo en el establecimiento educativo</label>
+              <textarea class="textarea" name="factoresRiesgoColegio"></textarea>
+            </div>
+          </article>
+        </section>
+
+        <section class="form-section" id="sec-academico">
+          <h2 class="section-title">Caracterización Académica y Socioemocional</h2>
+          <div class="info-box">Sección para estudiantes (12 a 18 años) del formato oficial.</div>
+
+          <article class="subsection">
+            <h3>Académico</h3>
+            <div class="form-group"><label>¿Qué aspectos del colegio te generan más entusiasmo o motivación?</label><textarea class="textarea" name="entusiasmoMotivacion"></textarea></div>
+            <div class="form-group"><label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo?</label><textarea class="textarea" name="asignaturasFortalezas"></textarea></div>
+            <div class="form-group"><label>¿Tienes un lugar adecuado para estudiar en casa?</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="radio" name="lugarEstudio" value="Si"> Sí</label>
+                <label class="radio-pill"><input type="radio" name="lugarEstudio" value="No"> No</label>
+                <label class="radio-pill"><input type="radio" name="lugarEstudio" value="A veces"> A veces</label>
+              </div>
+            </div>
+            <div class="form-group"><label>¿Qué estrategias usas para organizar tu tiempo escolar?</label><textarea class="textarea" name="estrategiasTiempoEscolar"></textarea></div>
+            <div class="form-group"><label>¿Te sientes apoyado/a por tus profesores en tu proceso de aprendizaje?</label><textarea class="textarea" name="apoyoProfesoresDetalle"></textarea></div>
+            <div class="form-group"><label>¿Sientes que tus intereses y habilidades son valorados en el colegio?</label><textarea class="textarea" name="interesesValorados"></textarea></div>
+            <div class="form-group"><label>¿Tienes un adulto en el colegio que te inspire o te oriente en tus metas?</label><textarea class="textarea" name="adultoInspirador"></textarea></div>
+            <div class="form-group"><label>¿Cómo relacionas lo que aprendes con tu proyecto de vida?</label><textarea class="textarea" name="aprendizajeProyectoVida"></textarea></div>
+          </article>
+
+          <article class="subsection">
+            <h3>Autocuidado y Cuidado Mutuo</h3>
+            <div class="form-group"><label>¿Qué acciones haces para cuidar tu salud física y emocional?</label><textarea class="textarea" name="accionesSalud"></textarea></div>
+            <div class="form-group"><label>¿Sabes qué hacer si alguien vulnera tus derechos o te hace sentir incómodo/a?</label><textarea class="textarea" name="vulneracionDerechos"></textarea></div>
+            <div class="form-group"><label>¿Has recibido orientación sobre derechos sexuales y reproductivos?</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="radio" name="orientacionSexualReproductiva" value="Si"> Sí</label>
+                <label class="radio-pill"><input type="radio" name="orientacionSexualReproductiva" value="No"> No</label>
+              </div>
+            </div>
+            <div class="form-group"><label>¿Cómo te informas sobre sexualidad, consentimiento o relaciones?</label><textarea class="textarea" name="informacionSexualidad"></textarea></div>
+            <div class="form-group"><label>¿Sabes a quién acudir si hay riesgo de consumo de SPA?</label><textarea class="textarea" name="riesgoSpa"></textarea></div>
+            <div class="form-group"><label>¿En tu colegio hay espacios para hablar sobre salud mental y autocuidado?</label><textarea class="textarea" name="espaciosSaludMental"></textarea></div>
+          </article>
+
+          <article class="subsection">
+            <h3>Socioemocional</h3>
+            <div class="form-group"><label>¿Cómo manejas emociones fuertes como enojo o tristeza?</label><textarea class="textarea" name="manejoEmociones"></textarea></div>
+            <div class="form-group"><label>¿Con quién hablas cuando tienes una dificultad emocional o personal?</label><textarea class="textarea" name="redApoyoEmocional"></textarea></div>
+            <div class="form-group"><label>¿Sientes que puedes expresar tu identidad en el colegio?</label><textarea class="textarea" name="expresarIdentidad"></textarea></div>
+            <div class="form-group"><label>¿Has identificado una meta personal o profesional para tu futuro?</label><textarea class="textarea" name="metaFutura"></textarea></div>
+            <div class="form-group"><label>¿Te sientes representado/a y escuchado/a en el colegio?</label><textarea class="textarea" name="representadoEscuchado"></textarea></div>
+            <div class="form-group"><label>¿Qué te gustaría mejorar para sentirte en equilibrio?</label><textarea class="textarea" name="mejorarEquilibrioPersonal"></textarea></div>
+          </article>
+        </section>
+
+        <section class="form-section" id="sec-familiar">
+          <h2 class="section-title">Módulo Familiar</h2>
+          <div class="info-box">Si alguna pregunta no aplica, escribe "No Aplica".</div>
+
+          <article class="subsection">
+            <h3>Composición Familiar</h3>
+            <div class="grid-2">
+              <div class="form-group"><label>Fecha de diligenciamiento inicial</label><input class="field" type="date" name="fechaDiligenciamientoInicial"></div>
+              <div class="form-group"><label>Documento del estudiante (verificación)</label><input class="field" type="text" name="docVerificacion"></div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group"><label>¿Cuántos hermanos(as) tiene?</label><input class="field" type="number" name="numeroHermanos" min="0" max="20"></div>
+              <div class="form-group"><label>¿El embarazo fue planeado?</label>
+                <select class="select" name="embarazoPlaneado">
+                  <option value="">Seleccione...</option>
+                  <option value="Si">Sí</option>
+                  <option value="No">No</option>
+                  <option value="No sabe">No sabe</option>
+                </select>
+              </div>
+            </div>
+          </article>
+
+          <article class="subsection">
+            <h3>Madre, Padre y Acudiente</h3>
+            <div class="form-group"><label>Madre (documento, edad, escolaridad, ocupación, situación laboral, condiciones especiales, aporte económico)</label><textarea class="textarea" name="infoMadre"></textarea></div>
+            <div class="form-group"><label>Padre (documento, edad, escolaridad, ocupación, situación laboral, condiciones especiales, aporte económico)</label><textarea class="textarea" name="infoPadre"></textarea></div>
+            <div class="form-group"><label>Acudiente (si es distinto) (parentesco, edad, escolaridad, ocupación, situación laboral, condiciones especiales, aporte económico)</label><textarea class="textarea" name="infoAcudiente"></textarea></div>
+          </article>
+
+          <article class="subsection">
+            <h3>Vivienda, Servicios y Relaciones</h3>
+            <div class="form-group"><label>Características de vivienda y habitabilidad (tenencia, tiempo de permanencia, número de convivientes, riesgos, condiciones de sueño, espacios independientes, aseo)</label><textarea class="textarea" name="viviendaHabitabilidad"></textarea></div>
+            <div class="form-group"><label>Servicios domiciliarios, agua, basuras, sanitario y entorno cercano</label><textarea class="textarea" name="serviciosEntorno"></textarea></div>
+            <div class="form-group"><label>Relaciones familiares, actividades de vínculo, acciones de cuidado, motivos de disgusto, solución de problemas, participación en hogar e incentivos</label><textarea class="textarea" name="relacionesFamiliares"></textarea></div>
+          </article>
+        </section>
+
+        <div class="page-actions">
+          <button type="button" class="btn btn-soft hidden" id="prevBtn">Anterior</button>
+          <button type="button" class="btn btn-primary" id="nextBtn">Siguiente</button>
+          <button type="submit" class="btn btn-success hidden" id="submitBtn">Guardar Registro</button>
         </div>
+      </form>
 
-        <form id="caracterizacionForm">
-            <div class="form-content">
-                <div id="alertContainer"></div>
+      <section class="save-panel" id="savePanel">
+        <h3>Registro guardado correctamente</h3>
+        <p id="savePanelText">La información fue almacenada.</p>
+        <div class="save-actions">
+          <button class="btn btn-primary" type="button" id="btnEditSaved">Editar este guardado</button>
+          <button class="btn btn-warn" type="button" id="btnCreateAnother">Crear otro registro</button>
+        </div>
+      </section>
+    </section>
+  </main>
 
-                <div class="loading" id="loadingIndicator">
-                    <div class="spinner"></div>
-                    <p style="margin-top:10px; color:#0369a1;">Guardando registro en Google Sheets...</p>
-                </div>
-
-                <div class="form-section active" data-section="1">
-                    <h2 class="section-title">Datos Personales del Estudiante</h2>
-                    <div class="info-box">Complete los campos obligatorios. La edad se calcula automáticamente a partir de la fecha de nacimiento.</div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Tipo de documento de identidad</label>
-                            <select name="tipoDocumento" required>
-                                <option value="">Seleccione...</option>
-                                <option value="TI">Tarjeta de Identidad</option>
-                                <option value="CC">Cédula de Ciudadanía</option>
-                                <option value="NUIP">NUIP</option>
-                                <option value="CE">Cédula de Extranjería</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Número de documento</label>
-                            <input type="text" name="numeroDocumento" id="numeroDocumento" required placeholder="Ej: 1234567890">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Nombres</label>
-                            <input type="text" name="nombres" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Apellidos</label>
-                            <input type="text" name="apellidos" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Fecha de nacimiento</label>
-                            <input type="date" name="fechaNacimiento" id="fechaNacimiento" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Edad</label>
-                            <input type="number" name="edad" id="edad" readonly required>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Sexo</label>
-                            <select name="sexo" required>
-                                <option value="">Seleccione...</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Femenino</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">País de nacimiento</label>
-                            <input type="text" name="paisNacimiento" required value="Colombia">
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Nacionalidad</label>
-                            <input type="text" name="nacionalidad" required value="Colombiana">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Municipio de residencia</label>
-                            <input type="text" name="municipioResidencia" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Barrio/Vereda/Comuna/Resguardo</label>
-                            <input type="text" name="barrioVereda" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Teléfono del acudiente</label>
-                            <input type="tel" name="telefonoAcudiente" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Lengua principal</label>
-                            <input type="text" name="lenguaPrincipal" required value="Español">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Lengua secundaria</label>
-                            <input type="text" name="lenguaSecundaria">
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Información Étnica y Salud</h3>
-
-                        <div class="form-group">
-                            <label class="required">¿Pertenece a comunidad étnica?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="perteneceEtnia" value="Si" required> Sí</label>
-                                <label class="radio-item"><input type="radio" name="perteneceEtnia" value="No" required> No</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="tipoEtniaGroup" style="display:none;">
-                            <label>Tipo de Étnia</label>
-                            <select name="tipoEtnia">
-                                <option value="">Seleccione...</option>
-                                <option value="Indigena">Indígena</option>
-                                <option value="Afrodescendiente">Afrodescendiente</option>
-                                <option value="Raizal">Raizal</option>
-                                <option value="Palenquero">Palenquero</option>
-                                <option value="Gitano">Gitano/ROM</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" id="puebloIndigenaGroup" style="display:none;">
-                            <label>Si es indígena, mencione el pueblo o resguardo</label>
-                            <input type="text" name="puebloIndigena">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required">¿Tiene discapacidad?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="tieneDiscapacidad" value="Si" required> Sí</label>
-                                <label class="radio-item"><input type="radio" name="tieneDiscapacidad" value="No" required> No</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="categoriaDiscapacidadGroup" style="display:none;">
-                            <label>Categoría de Discapacidad</label>
-                            <select name="categoriaDiscapacidad">
-                                <option value="">Seleccione...</option>
-                                <option value="Fisica">Física</option>
-                                <option value="Visual">Visual</option>
-                                <option value="Auditiva">Auditiva</option>
-                                <option value="Cognitiva">Cognitiva</option>
-                                <option value="Psicosocial">Psicosocial</option>
-                                <option value="Multiple">Múltiple</option>
-                                <option value="Otra">Otra</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required">¿El o la estudiante está afiliado(a) al Sistema de Seguridad Social en Salud?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="afiliadoSalud" value="Si" required> Sí</label>
-                                <label class="radio-item"><input type="radio" name="afiliadoSalud" value="No" required> No</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Institución, Vivienda y Riesgos</h3>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="required">Nombre de la institución educativa</label>
-                                <input type="text" name="institucionEducativa" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="required">Grado escolar</label>
-                                <select name="gradoEscolar" required>
-                                    <option value="">Seleccione...</option>
-                                    <option value="Transición">Transición</option>
-                                    <option value="1">Primero</option>
-                                    <option value="2">Segundo</option>
-                                    <option value="3">Tercero</option>
-                                    <option value="4">Cuarto</option>
-                                    <option value="5">Quinto</option>
-                                    <option value="6">Sexto</option>
-                                    <option value="7">Séptimo</option>
-                                    <option value="8">Octavo</option>
-                                    <option value="9">Noveno</option>
-                                    <option value="10">Décimo</option>
-                                    <option value="11">Once</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="required">Tipo de vivienda</label>
-                                <select name="tipoVivienda" required>
-                                    <option value="">Seleccione...</option>
-                                    <option value="Casa">Casa</option>
-                                    <option value="Apartamento">Apartamento</option>
-                                    <option value="Cuarto">Cuarto</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="required">¿La vivienda cuenta con servicios básicos?</label>
-                                <select name="serviciosBasicos" required>
-                                    <option value="">Seleccione...</option>
-                                    <option value="Si">Sí</option>
-                                    <option value="No">No</option>
-                                    <option value="Parcial">Parcial</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required">¿La o el estudiante duerme en?</label>
-                            <select name="estudianteDuermeEn" required>
-                                <option value="">Seleccione...</option>
-                                <option value="Cama propia">Cama propia</option>
-                                <option value="Cama compartida con hermanos">Cama compartida con hermanos</option>
-                                <option value="Cama compartida con adultos">Cama compartida con adultos</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required">¿La o el estudiante duerme con adultos en la misma habitación?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="duermeConAdultos" value="Si" required> Sí</label>
-                                <label class="radio-item"><input type="radio" name="duermeConAdultos" value="No" required> No</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Factores de riesgo en el territorio</label>
-                            <textarea name="factoresRiesgoTerritorio"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Factores de riesgo en el establecimiento educativo</label>
-                            <textarea name="factoresRiesgoColegio"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section" data-section="2">
-                    <h2 class="section-title">Caracterización Académica y Socioemocional (12 a 18 años)</h2>
-                    <div class="info-box">Preguntas del formato original: Académico, Autocuidado y Cuidado Mutuo, y Socioemocional.</div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Académico</h3>
-                        <div class="form-group"><label>¿Qué aspectos del colegio te generan más entusiasmo o motivación?</label><textarea name="entusiasmoMotivacion"></textarea></div>
-                        <div class="form-group"><label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo? (respuesta abierta)</label><textarea name="asignaturasFortalezas"></textarea></div>
-                        <div class="form-group"><label>¿Tienes un lugar adecuado para estudiar en casa?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="lugarEstudio" value="Si"> Sí</label>
-                                <label class="radio-item"><input type="radio" name="lugarEstudio" value="No"> No</label>
-                                <label class="radio-item"><input type="radio" name="lugarEstudio" value="A veces"> A veces</label>
-                            </div>
-                        </div>
-                        <div class="form-group"><label>¿Qué estrategias usas para organizar tu tiempo escolar?</label><textarea name="estrategiasTiempoEscolar"></textarea></div>
-                        <div class="form-group"><label>¿Te sientes apoyado/a por tus profesores en tu proceso de aprendizaje?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="apoyoProfesores" value="Si"> Sí</label>
-                                <label class="radio-item"><input type="radio" name="apoyoProfesores" value="No"> No</label>
-                                <label class="radio-item"><input type="radio" name="apoyoProfesores" value="A veces"> A veces</label>
-                            </div>
-                        </div>
-                        <div class="form-group"><label>¿Sientes que tus intereses y habilidades son valorados en el colegio?</label><textarea name="interesesValorados"></textarea></div>
-                        <div class="form-group"><label>¿Tienes un adulto en el colegio que te inspire o te oriente en tus metas?</label><textarea name="adultoInspirador"></textarea></div>
-                        <div class="form-group"><label>¿Cómo relacionas lo que aprendes con tu proyecto de vida?</label><textarea name="aprendizajeProyectoVida"></textarea></div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Autocuidado y Cuidado Mutuo</h3>
-                        <div class="form-group"><label>¿Qué acciones haces para cuidar tu salud física y emocional?</label><textarea name="accionesSalud"></textarea></div>
-                        <div class="form-group"><label>¿Sabes qué hacer si alguien vulnera tus derechos o te hace sentir incómodo/a?</label><textarea name="vulneracionDerechos"></textarea></div>
-                        <div class="form-group"><label>¿Has recibido orientación sobre derechos sexuales y reproductivos?</label>
-                            <div class="radio-group">
-                                <label class="radio-item"><input type="radio" name="orientacionSexualReproductiva" value="Si"> Sí</label>
-                                <label class="radio-item"><input type="radio" name="orientacionSexualReproductiva" value="No"> No</label>
-                            </div>
-                        </div>
-                        <div class="form-group"><label>¿Cómo te informas sobre temas de sexualidad, consentimiento o relaciones?</label><textarea name="informacionSexualidad"></textarea></div>
-                        <div class="form-group"><label>¿Sabes a quién acudir si hay riesgo de consumo de SPA (sustancias psicoactivas)?</label><textarea name="riesgoSpa"></textarea></div>
-                        <div class="form-group"><label>¿Crees que en tu colegio hay espacios para hablar sobre salud mental, autocuidado o consumo de sustancias?</label><textarea name="espaciosSaludMental"></textarea></div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Socioemocional</h3>
-                        <div class="form-group"><label>¿Cómo sueles manejar las emociones fuertes como el enojo o la tristeza?</label><textarea name="manejoEmociones"></textarea></div>
-                        <div class="form-group"><label>¿Con quién hablas cuando tienes una dificultad emocional o personal?</label><textarea name="redApoyoEmocional"></textarea></div>
-                        <div class="form-group"><label>¿Sientes que puedes ser tú mismo/a y expresar tu identidad en tu colegio?</label><textarea name="expresarIdentidad"></textarea></div>
-                        <div class="form-group"><label>¿Has identificado alguna meta personal o profesional para tu futuro?</label><textarea name="metaFutura"></textarea></div>
-                        <div class="form-group"><label>¿Te sientes representado/a y escuchado/a en el colegio?</label><textarea name="representadoEscuchado"></textarea></div>
-                        <div class="form-group"><label>¿Qué te gustaría mejorar en tu vida personal para sentirte en equilibrio?</label><textarea name="mejorarEquilibrioPersonal"></textarea></div>
-                    </div>
-                </div>
-
-                <div class="form-section" data-section="3">
-                    <h2 class="section-title">Módulo Familiar</h2>
-                    <div class="info-box">Preguntas ajustadas al formato familiar oficial. Si un campo no aplica, escriba "No Aplica".</div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Composición y Estructura Familiar</h3>
-                        <div class="form-group"><label>Fecha de diligenciamiento inicial</label><input type="date" name="fechaDiligenciamientoInicial"></div>
-                        <div class="form-group"><label>Documento de identidad del estudiante (verificar duplicidad)</label><input type="text" name="docVerificacion"></div>
-
-                        <div class="form-row">
-                            <div class="form-group"><label>¿La niña o el niño tiene hermanos(as)? Si es así, ¿cuántos?</label><input type="number" name="numeroHermanos" min="0" max="20"></div>
-                            <div class="form-group"><label>¿El embarazo del niño o la niña fue planeado?</label>
-                                <select name="embarazoPlaneado">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Si">Sí</option>
-                                    <option value="No">No</option>
-                                    <option value="No sabe">No sabe</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Datos de la Madre</h3>
-                        <div class="form-row">
-                            <div class="form-group"><label>Documento</label><input type="text" name="documentoMadre"></div>
-                            <div class="form-group"><label>Edad</label><input type="number" name="edadMadre" min="10" max="100"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Nivel de escolaridad</label><input type="text" name="escolaridadMadre"></div>
-                            <div class="form-group"><label>Ocupación</label><input type="text" name="ocupacionMadre"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Sabe leer</label><select name="sabeLeerMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                            <div class="form-group"><label>Sabe escribir</label><select name="sabeEscribirMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Situación laboral</label><input type="text" name="situacionLaboralMadre"></div>
-                            <div class="form-group"><label>Aporta al sustento económico</label><select name="aportaEconomicoMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                        </div>
-                        <div class="form-group"><label>Condiciones especiales (ABIERTA)</label><textarea name="condicionesEspecialesMadre"></textarea></div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Datos del Padre</h3>
-                        <div class="form-row">
-                            <div class="form-group"><label>Documento</label><input type="text" name="documentoPadre"></div>
-                            <div class="form-group"><label>Edad</label><input type="number" name="edadPadre" min="10" max="100"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Nivel de escolaridad</label><input type="text" name="escolaridadPadre"></div>
-                            <div class="form-group"><label>Ocupación</label><input type="text" name="ocupacionPadre"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Sabe leer</label><select name="sabeLeerPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                            <div class="form-group"><label>Sabe escribir</label><select name="sabeEscribirPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Situación laboral</label><input type="text" name="situacionLaboralPadre"></div>
-                            <div class="form-group"><label>Aporta al sustento económico</label><select name="aportaEconomicoPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                        </div>
-                        <div class="form-group"><label>Condiciones especiales (ABIERTA)</label><textarea name="condicionesEspecialesPadre"></textarea></div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Acudiente (si es distinto)</h3>
-                        <div class="form-row">
-                            <div class="form-group"><label>Parentesco</label><input type="text" name="parentescoAcudiente"></div>
-                            <div class="form-group"><label>Edad</label><input type="number" name="edadAcudiente" min="10" max="100"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Nivel de escolaridad</label><input type="text" name="escolaridadAcudiente"></div>
-                            <div class="form-group"><label>Ocupación</label><input type="text" name="ocupacionAcudiente"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Sabe leer</label><select name="sabeLeerAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                            <div class="form-group"><label>Sabe escribir</label><select name="sabeEscribirAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Situación laboral</label><input type="text" name="situacionLaboralAcudiente"></div>
-                            <div class="form-group"><label>Aporta al sustento económico</label><select name="aportaEconomicoAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
-                        </div>
-                        <div class="form-group"><label>Condiciones especiales (ABIERTA)</label><textarea name="condicionesEspecialesAcudiente"></textarea></div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Vivienda y Habitabilidad</h3>
-                        <div class="form-row">
-                            <div class="form-group"><label>Tipo de vivienda del hogar</label><input type="text" name="tipoViviendaFamiliar"></div>
-                            <div class="form-group"><label>Tipo de tenencia de la vivienda del hogar</label><input type="text" name="tenenciaVivienda"></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Tiempo de permanencia en el barrio/corregimiento (años)</label><input type="number" name="tiempoPermanenciaBarrio" min="0" max="99"></div>
-                            <div class="form-group"><label>Número de personas del núcleo familiar que conviven en la vivienda</label><input type="number" name="personasNucleoFamiliar" min="1" max="40"></div>
-                        </div>
-                        <div class="form-group"><label>Reconoce riesgos que puedan afectar la vivienda (naturales, humanos, sociales)</label><textarea name="riesgosVivienda"></textarea></div>
-                        <div class="form-group"><label>¿La niña o el niño duerme con adultos en la misma habitación?</label><textarea name="duermeHabitacionAdultos"></textarea></div>
-                        <div class="form-group"><label>¿La niña o el niño duerme con adultos en la misma cama?</label><textarea name="duermeCamaAdultos"></textarea></div>
-                        <div class="form-group"><label>¿La vivienda cuenta con espacios independientes para dormitorio, cocina y baños?</label><textarea name="espaciosIndependientes"></textarea></div>
-                        <div class="form-group"><label>¿La vivienda cuenta con espacios aseados?</label><textarea name="espaciosAseados"></textarea></div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Servicios, Entorno y Relaciones</h3>
-                        <div class="form-group"><label>Servicios domiciliarios (energía, acueducto, alcantarillado, gas, telefonía fija, internet, celular)</label><textarea name="serviciosDomiciliariosDetalle"></textarea></div>
-                        <div class="form-group"><label>Fuente de agua para consumo y preparación de alimentos</label><textarea name="fuenteAgua"></textarea></div>
-                        <div class="form-group"><label>Tratamiento del agua para potabilizarla</label><textarea name="tratamientoAgua"></textarea></div>
-                        <div class="form-group"><label>Tratamiento de basuras</label><textarea name="tratamientoBasuras"></textarea></div>
-                        <div class="form-group"><label>Tipo de sanitario y uso exclusivo/compartido</label><textarea name="sanitarioHogar"></textarea></div>
-                        <div class="form-group"><label>Cerca de la vivienda se cuenta con (vías, sedes educativas, bibliotecas, servicios de salud, transporte, parques, río, lugares sagrados, etc.)</label><textarea name="entornoVivienda"></textarea></div>
-                        <div class="form-group"><label>El núcleo familiar comparte sus dificultades con</label><textarea name="comparteDificultades"></textarea></div>
-                        <div class="form-group"><label>El núcleo familiar comparte sus acontecimientos especiales con</label><textarea name="comparteAcontecimientos"></textarea></div>
-                        <div class="form-group"><label>¿Con quién permanece la niña o el niño cuando sale de la unidad de servicio?</label><textarea name="permaneceCon"></textarea></div>
-                        <div class="form-group"><label>Actividades que realiza el núcleo para fortalecer diálogo y vínculos</label><textarea name="actividadesDialogoVinculos"></textarea></div>
-                        <div class="form-group"><label>Acciones de cuidado de niñas y niños en el núcleo familiar</label><textarea name="accionesCuidadoNucleo"></textarea></div>
-                        <div class="form-group"><label>Motivo más frecuente de disgusto entre adultos del núcleo familiar</label><textarea name="motivoDisgustoAdultos"></textarea></div>
-                        <div class="form-group"><label>¿Cómo intentan solucionar los problemas dentro del núcleo familiar?</label><textarea name="solucionProblemasFamilia"></textarea></div>
-                        <div class="form-group"><label>Participación de niñas y niños en actividades del hogar</label><textarea name="participacionHogar"></textarea></div>
-                        <div class="form-group"><label>Reconocimientos o incentivos por logros</label><textarea name="incentivosLogros"></textarea></div>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display:none;">Anterior</button>
-                    <button type="button" class="btn btn-primary" id="nextBtn">Siguiente</button>
-                    <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">Guardar en Google Sheets</button>
-                </div>
-
-                <div class="save-panel" id="savePanel">
-                    <h3>Registro guardado correctamente en la nube</h3>
-                    <p id="savePanelText">La información quedó almacenada correctamente.</p>
-                    <div class="save-actions">
-                        <button type="button" class="btn btn-edit" id="btnEditSaved">Editar este guardado</button>
-                        <button type="button" class="btn btn-another" id="btnCreateAnother">Crear otro registro</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <script src="assets/js/app.js" defer></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

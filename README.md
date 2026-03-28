@@ -1,19 +1,103 @@
-# 📋 Formulario de Caracterización Estudiantil - Plan de Orientación Escolar
+# Formulario de Caracterización POE
 
-Este proyecto es una aplicación web progresiva (Single Page Application) diseñada para recolectar, gestionar y digitalizar la información de caracterización de estudiantes. El sistema utiliza **Google Sheets** como base de datos backend, permitiendo una gestión de información sin costos de servidor y con actualización en tiempo real.
+Aplicación web para diligenciar la caracterización de estudiantes y familias del Plan de Orientación Escolar (POE), con interfaz amigable y estructura modular para mantenimiento profesional.
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Google Sheets](https://img.shields.io/badge/Google%20Sheets-34A853?style=for-the-badge&logo=google-sheets&logoColor=white)
 
-## ✨ Características Principales
+## Objetivo
 
-* **Arquitectura Serverless:** No requiere base de datos SQL ni servidor backend tradicional; todo se almacena en una Hoja de Cálculo de Google.
-* **Interfaz Guiada por Pasos:** Formulario dividido en 3 secciones lógicas (Datos Personales, Académico/Socioemocional, Familiar) con barra de progreso.
-* **Diseño Responsivo:** Estilos CSS modernos (Flexbox/Grid) optimizados para PC, Tablets y Móviles.
-* **Validación en Tiempo Real:** Campos obligatorios, cálculo automático de edad y lógica condicional (ej. preguntas sobre discapacidad o etnia).
-* **Modo Offline (Parcial):** La configuración de la URL del script se guarda en el `localStorage` del navegador.
-* **Funciones CRUD:**
-    * ➕ **Crear:** Nuevos registros de estudiantes.
-    * 🔍 **Buscar:** Consulta de estudiantes por número de documento (conecta con Sheets para traer datos).
+Facilitar el registro de información de caracterización de forma clara para estudiantes, acudientes y docentes, con almacenamiento en Google Sheets y consulta por documento de identidad.
+
+## Características principales
+
+- Interfaz por pasos (3 secciones):
+  - Datos del estudiante
+  - Académico y socioemocional
+  - Módulo familiar
+- Diseño moderno, adaptable a celular y escritorio.
+- Guardado en Google Sheets (nube institucional).
+- Búsqueda por número de documento.
+- Indicadores de base de datos:
+  - Total de registros
+  - Último registro/cambio
+- Guardado de borrador local en navegador (protege datos mientras se diligencia).
+- Validaciones de campos obligatorios y lógica condicional (etnia, discapacidad, etc.).
+
+## Estructura del proyecto
+
+```text
+Caracterizacion/
+├── index.html
+├── css/
+│   ├── global.css
+│   ├── layout.css
+│   ├── components.css
+│   └── themes.css
+├── js/
+│   ├── config.js
+│   ├── main.js
+│   ├── navigation.js
+│   ├── storage.js
+│   ├── api.js
+│   └── ui.js
+└── README.md
+```
+
+## Descripción de módulos JS
+
+- `config.js`: configuración general (URL Apps Script, ID de hoja, secciones).
+- `main.js`: inicialización de la app y orquestación de eventos.
+- `navigation.js`: control del flujo por secciones.
+- `storage.js`: borrador local (`localStorage`).
+- `api.js`: integración con Apps Script y fallback de lectura de hoja.
+- `ui.js`: renderizado, alertas, validaciones y actualización de estado visual.
+
+## Configuración
+
+Edita `js/config.js`:
+
+```js
+export const APP_CONFIG = {
+  googleScriptUrl: 'TU_URL_DE_APPS_SCRIPT',
+  sheetId: 'TU_SHEET_ID',
+  sheetGid: '0',
+  sectionIds: ['sec-personal', 'sec-academico', 'sec-familiar'],
+  requiredMessage: 'Completa los campos obligatorios (*) antes de continuar.'
+};
+```
+
+## Ejecución local
+
+Como es una SPA estática, puedes abrir `index.html` directamente. Para desarrollo recomendado:
+
+```bash
+python -m http.server 8000
+```
+
+Luego abre `http://localhost:8000`.
+
+## Flujo de datos
+
+1. Usuario diligencia formulario.
+2. App valida y prepara payload.
+3. App envía datos al Apps Script (`POST`).
+4. Búsqueda y estadísticas se consultan por Apps Script (`GET`) y, si es necesario, usan fallback de lectura de Google Sheets.
+
+## Estado actual
+
+- UI renovada y modular.
+- Código separado por responsabilidades.
+- Compatible con mantenimiento escalable.
+
+## Recomendaciones de despliegue
+
+- Mantener la hoja de cálculo en nube institucional.
+- Publicar Apps Script como Web App con permisos controlados.
+- No exponer credenciales o tokens en frontend.
+
+## Licencia
+
+Uso institucional/educativo según lineamientos del proyecto.
