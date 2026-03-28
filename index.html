@@ -116,7 +116,7 @@
             <div class="grid-2">
               <div class="form-group">
                 <label class="required">Municipio de residencia</label>
-                <input class="field" type="text" name="municipioResidencia" required>
+                <input class="field" type="text" name="municipioResidencia" value="Colombia" required>
               </div>
               <div class="form-group">
                 <label class="required">Barrio / Vereda / Comuna / Resguardo</label>
@@ -198,10 +198,15 @@
               </div>
             </div>
 
+            <div class="form-group hidden" id="afiliadoSaludCualGroup">
+              <label>Si está afiliado(a), ¿a cuál entidad de salud?</label>
+              <input class="field" type="text" name="afiliadoSaludCual" placeholder="Ej: EPS, régimen o entidad">
+            </div>
+
             <div class="grid-2">
               <div class="form-group">
                 <label class="required">Institución educativa</label>
-                <input class="field" type="text" name="institucionEducativa" required>
+                <input class="field" type="text" name="institucionEducativa" value="IE Paulo VI" required>
               </div>
               <div class="form-group">
                 <label class="required">Grado escolar</label>
@@ -230,28 +235,46 @@
                   <option value="">Seleccione...</option>
                   <option value="Casa">Casa</option>
                   <option value="Apartamento">Apartamento</option>
+                  <option value="Finca">Finca</option>
                   <option value="Cuarto">Cuarto</option>
                   <option value="Otro">Otro</option>
                 </select>
               </div>
               <div class="form-group">
-                <label class="required">¿La vivienda cuenta con servicios básicos?</label>
-                <select class="select" name="serviciosBasicos" required>
-                  <option value="">Seleccione...</option>
-                  <option value="Si">Sí</option>
-                  <option value="No">No</option>
-                  <option value="Parcial">Parcial</option>
-                </select>
+                <label class="required">Servicios básicos con los que cuenta la vivienda</label>
+                <div class="radio-stack">
+                  <label class="radio-pill"><input type="checkbox" name="servicioEnergia" value="Si"> Energía</label>
+                  <label class="radio-pill"><input type="checkbox" name="servicioAgua" value="Si"> Agua / Acueducto</label>
+                  <label class="radio-pill"><input type="checkbox" name="servicioAlcantarillado" value="Si"> Alcantarillado</label>
+                  <label class="radio-pill"><input type="checkbox" name="servicioInternet" value="Si"> Internet</label>
+                  <label class="radio-pill"><input type="checkbox" name="servicioGas" value="Si"> Gas</label>
+                  <label class="radio-pill"><input type="checkbox" name="servicioTelefoniaCelular" value="Si"> Telefonía celular</label>
+                  <label class="radio-pill"><input type="checkbox" name="servicioTelefoniaFija" value="Si"> Telefonía fija</label>
+                </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label>Factores de riesgo en el territorio</label>
-              <textarea class="textarea" name="factoresRiesgoTerritorio"></textarea>
+              <label>Factores de riesgo en el territorio (puedes marcar varios)</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="riesgoTerritorioDerrumbes" value="Si"> Derrumbes</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoTerritorioAvalanchas" value="Si"> Avalanchas</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoTerritorioInundaciones" value="Si"> Inundaciones</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoTerritorioGruposArmados" value="Si"> Presencia de grupos armados</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoTerritorioOtroCheck" value="Si"> Otro</label>
+              </div>
+              <input class="field" type="text" name="riesgoTerritorioOtro" placeholder="Si marcaste 'Otro', escribe cuál">
             </div>
             <div class="form-group">
-              <label>Factores de riesgo en el establecimiento educativo</label>
-              <textarea class="textarea" name="factoresRiesgoColegio"></textarea>
+              <label>Factores de riesgo en el establecimiento educativo (puedes marcar varios)</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="riesgoColegioBullying" value="Si"> Bullying / matoneo</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoColegioDesercion" value="Si"> Intención de deserción escolar</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoColegioBajoRendimiento" value="Si"> Bajo rendimiento académico</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoColegioConvivencia" value="Si"> Problemas de convivencia</label>
+                <label class="radio-pill"><input type="checkbox" name="riesgoColegioOtroCheck" value="Si"> Otro</label>
+              </div>
+              <input class="field" type="text" name="riesgoColegioOtro" placeholder="Si marcaste 'Otro', escribe cuál">
             </div>
           </article>
         </section>
@@ -262,26 +285,70 @@
 
           <article class="subsection">
             <h3>Académico</h3>
-            <div class="form-group"><label>¿Qué aspectos del colegio te generan más entusiasmo o motivación?</label><textarea class="textarea" name="entusiasmoMotivacion"></textarea></div>
-            <div class="form-group"><label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo?</label><textarea class="textarea" name="asignaturasFortalezas"></textarea></div>
+            <div class="form-group">
+              <label>¿Qué aspectos del colegio te generan más entusiasmo o motivación?</label>
+              <textarea
+                class="textarea"
+                name="entusiasmoMotivacion"
+                placeholder="Ejemplo: aprender cosas nuevas, hacer deporte, bailar, participar en laboratorio, arte o actividades en grupo."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo?</label>
+              <textarea
+                class="textarea"
+                name="asignaturasFortalezas"
+                placeholder="Escribe dos cosas: 1) asignaturas en las que te va bien, 2) asignaturas en las que necesitas ayuda. Ejemplo: me va bien en matemáticas y necesito apoyo en inglés."
+              ></textarea>
+            </div>
             <div class="form-group"><label>¿Tienes un lugar adecuado para estudiar en casa?</label>
+              <p style="font-size:.92rem; color:#46607d; margin:4px 0 8px;">
+                Guía: marca <strong>Sí</strong> si tienes un espacio tranquilo (por ejemplo escritorio o dormitorio),
+                <strong>A veces</strong> si estudias en lugares comunes como comedor o sala, y <strong>No</strong>
+                si no cuentas con un lugar adecuado para estudiar.
+              </p>
               <div class="radio-stack">
                 <label class="radio-pill"><input type="radio" name="lugarEstudio" value="Si"> Sí</label>
                 <label class="radio-pill"><input type="radio" name="lugarEstudio" value="No"> No</label>
                 <label class="radio-pill"><input type="radio" name="lugarEstudio" value="A veces"> A veces</label>
               </div>
             </div>
-            <div class="form-group"><label>¿Qué estrategias usas para organizar tu tiempo escolar?</label><textarea class="textarea" name="estrategiasTiempoEscolar"></textarea></div>
-            <div class="form-group"><label>¿Te sientes apoyado/a por tus profesores en tu proceso de aprendizaje?</label><textarea class="textarea" name="apoyoProfesoresDetalle"></textarea></div>
-            <div class="form-group"><label>¿Sientes que tus intereses y habilidades son valorados en el colegio?</label><textarea class="textarea" name="interesesValorados"></textarea></div>
-            <div class="form-group"><label>¿Tienes un adulto en el colegio que te inspire o te oriente en tus metas?</label><textarea class="textarea" name="adultoInspirador"></textarea></div>
-            <div class="form-group"><label>¿Cómo relacionas lo que aprendes con tu proyecto de vida?</label><textarea class="textarea" name="aprendizajeProyectoVida"></textarea></div>
+            <div class="form-group">
+              <label>¿Qué estrategias usas para organizar tu tiempo escolar?</label>
+              <textarea
+                class="textarea"
+                name="estrategiasTiempoEscolar"
+                placeholder="Ejemplo: uso agenda para recordar tareas; le pido a mamá, familiar o cuidador que me recuerde; uso tablero, calendario o alarmas."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿Te sientes apoyado/a por tus profesores en tu proceso de aprendizaje?</label>
+              <textarea class="textarea" name="apoyoProfesoresDetalle" placeholder="Indica si te sientes apoyado/a o no, y por qué. Ejemplo: sí me explican con paciencia / no porque me cuesta preguntar en clase."></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿Sientes que tus intereses y habilidades son valorados en el colegio?</label>
+              <textarea class="textarea" name="interesesValorados" placeholder="Escribe si te sientes valorado/a o no. Ejemplo: sí, me tienen en cuenta en deporte/arte; no, siento que mis ideas no son escuchadas."></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿Tienes un adulto en el colegio que te inspire o te oriente en tus metas?</label>
+              <textarea class="textarea" name="adultoInspirador" placeholder="Puedes escribir quién es (docente, orientador/a, coordinador/a) o indicar que aún no tienes esa persona."></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿Cómo relacionas lo que aprendes con tu proyecto de vida?</label>
+              <textarea class="textarea" name="aprendizajeProyectoVida" placeholder="Ejemplo: las matemáticas me ayudan para ingeniería; lenguaje me ayuda a comunicarme mejor; aún no lo tengo claro."></textarea>
+            </div>
           </article>
 
           <article class="subsection">
             <h3>Autocuidado y Cuidado Mutuo</h3>
-            <div class="form-group"><label>¿Qué acciones haces para cuidar tu salud física y emocional?</label><textarea class="textarea" name="accionesSalud"></textarea></div>
-            <div class="form-group"><label>¿Sabes qué hacer si alguien vulnera tus derechos o te hace sentir incómodo/a?</label><textarea class="textarea" name="vulneracionDerechos"></textarea></div>
+            <div class="form-group">
+              <label>¿Qué acciones haces para cuidar tu salud física y emocional?</label>
+              <textarea class="textarea" name="accionesSalud" placeholder="Ejemplo: duermo bien, hago ejercicio, hablo con alguien de confianza, practico respiración o actividades que me tranquilizan."></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿Sabes qué hacer si alguien vulnera tus derechos o te hace sentir incómodo/a?</label>
+              <textarea class="textarea" name="vulneracionDerechos" placeholder="Indica si sabes a quién acudir (docente, orientación escolar, familia, comisaría, línea de ayuda) o si necesitas orientación."></textarea>
+            </div>
             <div class="form-group"><label>¿Has recibido orientación sobre derechos sexuales y reproductivos?</label>
               <div class="radio-stack">
                 <label class="radio-pill"><input type="radio" name="orientacionSexualReproductiva" value="Si"> Sí</label>
@@ -289,33 +356,54 @@
               </div>
             </div>
             <div class="form-group"><label>¿Cómo te informas sobre sexualidad, consentimiento o relaciones?</label><textarea class="textarea" name="informacionSexualidad"></textarea></div>
-            <div class="form-group"><label>¿Sabes a quién acudir si hay riesgo de consumo de SPA?</label><textarea class="textarea" name="riesgoSpa"></textarea></div>
+            <div class="form-group">
+              <label>¿Sabes a quién acudir si hay riesgo de consumo de SPA (sustancias psicoactivas, por ejemplo alcohol, cigarrillo electrónico, marihuana u otras drogas)?</label>
+              <textarea class="textarea" name="riesgoSpa" placeholder="Escribe a quién acudirías: familia, docente, orientación escolar, psicología, centro de salud u otra red de apoyo."></textarea>
+            </div>
             <div class="form-group"><label>¿En tu colegio hay espacios para hablar sobre salud mental y autocuidado?</label><textarea class="textarea" name="espaciosSaludMental"></textarea></div>
           </article>
 
           <article class="subsection">
             <h3>Socioemocional</h3>
             <div class="form-group"><label>¿Cómo manejas emociones fuertes como enojo o tristeza?</label><textarea class="textarea" name="manejoEmociones"></textarea></div>
-            <div class="form-group"><label>¿Con quién hablas cuando tienes una dificultad emocional o personal?</label><textarea class="textarea" name="redApoyoEmocional"></textarea></div>
+            <div class="form-group">
+              <label>¿Con quién hablas cuando tienes una dificultad emocional o personal?</label>
+              <textarea class="textarea" name="redApoyoEmocional" placeholder="Ejemplo: mamá, papá, acudiente, hermano/a, amigo/a, docente, orientador/a o nadie por ahora."></textarea>
+            </div>
             <div class="form-group"><label>¿Sientes que puedes expresar tu identidad en el colegio?</label><textarea class="textarea" name="expresarIdentidad"></textarea></div>
             <div class="form-group"><label>¿Has identificado una meta personal o profesional para tu futuro?</label><textarea class="textarea" name="metaFutura"></textarea></div>
-            <div class="form-group"><label>¿Te sientes representado/a y escuchado/a en el colegio?</label><textarea class="textarea" name="representadoEscuchado"></textarea></div>
-            <div class="form-group"><label>¿Qué te gustaría mejorar para sentirte en equilibrio?</label><textarea class="textarea" name="mejorarEquilibrioPersonal"></textarea></div>
+            <div class="form-group">
+              <label>¿Te sientes representado/a y escuchado/a en el colegio?</label>
+              <textarea class="textarea" name="representadoEscuchado" placeholder="Puedes responder sí/no y explicar brevemente. Ejemplo: sí, participan mis ideas; no, me cuesta que escuchen mi opinión."></textarea>
+            </div>
+            <div class="form-group">
+              <label>¿Qué te gustaría mejorar para sentirte en equilibrio?</label>
+              <textarea class="textarea" name="mejorarEquilibrioPersonal" placeholder="Ejemplo: organizar mejor mi tiempo, dormir mejor, manejar el estrés, mejorar convivencia o pedir apoyo emocional."></textarea>
+            </div>
           </article>
         </section>
 
         <section class="form-section" id="sec-familiar">
           <h2 class="section-title">Módulo Familiar</h2>
-          <div class="info-box">Si alguna pregunta no aplica, escribe "No Aplica".</div>
+          <div class="info-box">Sección simplificada en checklist para facilitar el diligenciamiento familiar.</div>
 
           <article class="subsection">
             <h3>Composición Familiar</h3>
             <div class="grid-2">
               <div class="form-group"><label>Fecha de diligenciamiento inicial</label><input class="field" type="date" name="fechaDiligenciamientoInicial"></div>
-              <div class="form-group"><label>Documento del estudiante (verificación)</label><input class="field" type="text" name="docVerificacion"></div>
+              <div class="form-group">
+                <label>¿Cuántos hermanos(as) tiene?</label>
+                <select class="select" name="numeroHermanos">
+                  <option value="">Seleccione...</option>
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4 o más">4 o más</option>
+                </select>
+              </div>
             </div>
             <div class="grid-2">
-              <div class="form-group"><label>¿Cuántos hermanos(as) tiene?</label><input class="field" type="number" name="numeroHermanos" min="0" max="20"></div>
               <div class="form-group"><label>¿El embarazo fue planeado?</label>
                 <select class="select" name="embarazoPlaneado">
                   <option value="">Seleccione...</option>
@@ -328,17 +416,282 @@
           </article>
 
           <article class="subsection">
-            <h3>Madre, Padre y Acudiente</h3>
-            <div class="form-group"><label>Madre (documento, edad, escolaridad, ocupación, situación laboral, condiciones especiales, aporte económico)</label><textarea class="textarea" name="infoMadre"></textarea></div>
-            <div class="form-group"><label>Padre (documento, edad, escolaridad, ocupación, situación laboral, condiciones especiales, aporte económico)</label><textarea class="textarea" name="infoPadre"></textarea></div>
-            <div class="form-group"><label>Acudiente (si es distinto) (parentesco, edad, escolaridad, ocupación, situación laboral, condiciones especiales, aporte económico)</label><textarea class="textarea" name="infoAcudiente"></textarea></div>
+            <h3>Datos de la Madre</h3>
+            <div class="grid-3">
+              <div class="form-group"><label>Documento</label><input class="field" type="text" name="documentoMadre" placeholder="Opcional"></div>
+              <div class="form-group">
+                <label>Rango de edad</label>
+                <select class="select" name="edadMadre">
+                  <option value="">Seleccione...</option>
+                  <option value="Menor de 20">Menor de 20</option>
+                  <option value="20 a 30">20 a 30</option>
+                  <option value="31 a 40">31 a 40</option>
+                  <option value="41 a 50">41 a 50</option>
+                  <option value="51 o más">51 o más</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Nivel de escolaridad</label>
+                <select class="select" name="escolaridadMadre">
+                  <option value="">Seleccione...</option>
+                  <option value="Ninguna">Ninguna</option>
+                  <option value="Primaria">Primaria</option>
+                  <option value="Secundaria">Secundaria</option>
+                  <option value="Técnica/Tecnológica">Técnica/Tecnológica</option>
+                  <option value="Universitaria">Universitaria</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="form-group">
+                <label>Ocupación principal</label>
+                <select class="select" name="ocupacionMadre">
+                  <option value="">Seleccione...</option>
+                  <option value="Hogar">Hogar</option>
+                  <option value="Agricultura">Agricultura</option>
+                  <option value="Comercio">Comercio</option>
+                  <option value="Empleo formal">Empleo formal</option>
+                  <option value="Empleo informal">Empleo informal</option>
+                  <option value="Otra">Otra</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Sabe leer</label>
+                <select class="select" name="sabeLeerMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+              </div>
+              <div class="form-group"><label>Sabe escribir</label>
+                <select class="select" name="sabeEscribirMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralMadre"></div>
+              <div class="form-group"><label>Aporta al sustento económico</label>
+                <select class="select" name="aportaEconomicoMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Condiciones especiales (puede marcar varias)</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="madreCondicionDiscapacidad" value="Si"> Discapacidad</label>
+                <label class="radio-pill"><input type="checkbox" name="madreCondicionEnfermedad" value="Si"> Enfermedad crónica</label>
+                <label class="radio-pill"><input type="checkbox" name="madreCondicionNinguna" value="Si"> Ninguna</label>
+                <label class="radio-pill"><input type="checkbox" name="madreCondicionOtraCheck" value="Si"> Otra</label>
+              </div>
+              <input class="field" type="text" name="madreCondicionOtra" placeholder="Si marcó Otra, ¿cuál?">
+            </div>
+          </article>
+
+          <article class="subsection">
+            <h3>Datos del Padre</h3>
+            <div class="form-group">
+              <label class="radio-pill"><input type="checkbox" name="padreNoAplica" value="Si"> Padre ausente / No aplica diligenciamiento</label>
+            </div>
+            <div id="padreFields">
+              <div class="grid-3">
+                <div class="form-group"><label>Documento</label><input class="field" type="text" name="documentoPadre" placeholder="Opcional"></div>
+                <div class="form-group">
+                  <label>Rango de edad</label>
+                  <select class="select" name="edadPadre">
+                    <option value="">Seleccione...</option>
+                    <option value="Menor de 20">Menor de 20</option>
+                    <option value="20 a 30">20 a 30</option>
+                    <option value="31 a 40">31 a 40</option>
+                    <option value="41 a 50">41 a 50</option>
+                    <option value="51 o más">51 o más</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Nivel de escolaridad</label>
+                  <select class="select" name="escolaridadPadre">
+                    <option value="">Seleccione...</option>
+                    <option value="Ninguna">Ninguna</option>
+                    <option value="Primaria">Primaria</option>
+                    <option value="Secundaria">Secundaria</option>
+                    <option value="Técnica/Tecnológica">Técnica/Tecnológica</option>
+                    <option value="Universitaria">Universitaria</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>Ocupación principal</label>
+                  <select class="select" name="ocupacionPadre">
+                    <option value="">Seleccione...</option>
+                    <option value="Hogar">Hogar</option>
+                    <option value="Agricultura">Agricultura</option>
+                    <option value="Comercio">Comercio</option>
+                    <option value="Empleo formal">Empleo formal</option>
+                    <option value="Empleo informal">Empleo informal</option>
+                    <option value="Otra">Otra</option>
+                  </select>
+                </div>
+                <div class="form-group"><label>Sabe leer</label>
+                  <select class="select" name="sabeLeerPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+                </div>
+                <div class="form-group"><label>Sabe escribir</label>
+                  <select class="select" name="sabeEscribirPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralPadre"></div>
+                <div class="form-group"><label>Aporta al sustento económico</label>
+                  <select class="select" name="aportaEconomicoPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Condiciones especiales (puede marcar varias)</label>
+                <div class="radio-stack">
+                  <label class="radio-pill"><input type="checkbox" name="padreCondicionDiscapacidad" value="Si"> Discapacidad</label>
+                  <label class="radio-pill"><input type="checkbox" name="padreCondicionEnfermedad" value="Si"> Enfermedad crónica</label>
+                  <label class="radio-pill"><input type="checkbox" name="padreCondicionNinguna" value="Si"> Ninguna</label>
+                  <label class="radio-pill"><input type="checkbox" name="padreCondicionOtraCheck" value="Si"> Otra</label>
+                </div>
+                <input class="field" type="text" name="padreCondicionOtra" placeholder="Si marcó Otra, ¿cuál?">
+              </div>
+            </div>
+          </article>
+
+          <article class="subsection">
+            <h3>Datos del Acudiente (si es diferente a madre o padre)</h3>
+            <div class="form-group">
+              <label class="radio-pill"><input type="checkbox" name="acudienteNoAplica" value="Si"> No aplica diligenciamiento de acudiente</label>
+            </div>
+            <div id="acudienteFields">
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>Parentesco</label>
+                  <select class="select" name="parentescoAcudiente">
+                    <option value="">Seleccione...</option>
+                    <option value="Abuelo/a">Abuelo/a</option>
+                    <option value="Tío/a">Tío/a</option>
+                    <option value="Hermano/a mayor">Hermano/a mayor</option>
+                    <option value="Padrastro/Madrastra">Padrastro/Madrastra</option>
+                    <option value="Otro familiar">Otro familiar</option>
+                    <option value="No familiar">No familiar</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Rango de edad</label>
+                  <select class="select" name="edadAcudiente">
+                    <option value="">Seleccione...</option>
+                    <option value="Menor de 20">Menor de 20</option>
+                    <option value="20 a 30">20 a 30</option>
+                    <option value="31 a 40">31 a 40</option>
+                    <option value="41 a 50">41 a 50</option>
+                    <option value="51 o más">51 o más</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Nivel de escolaridad</label>
+                  <select class="select" name="escolaridadAcudiente">
+                    <option value="">Seleccione...</option>
+                    <option value="Ninguna">Ninguna</option>
+                    <option value="Primaria">Primaria</option>
+                    <option value="Secundaria">Secundaria</option>
+                    <option value="Técnica/Tecnológica">Técnica/Tecnológica</option>
+                    <option value="Universitaria">Universitaria</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label>Ocupación principal</label>
+                  <select class="select" name="ocupacionAcudiente">
+                    <option value="">Seleccione...</option>
+                    <option value="Hogar">Hogar</option>
+                    <option value="Agricultura">Agricultura</option>
+                    <option value="Comercio">Comercio</option>
+                    <option value="Empleo formal">Empleo formal</option>
+                    <option value="Empleo informal">Empleo informal</option>
+                    <option value="Otra">Otra</option>
+                  </select>
+                </div>
+                <div class="form-group"><label>Sabe leer</label>
+                  <select class="select" name="sabeLeerAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+                </div>
+                <div class="form-group"><label>Sabe escribir</label>
+                  <select class="select" name="sabeEscribirAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralAcudiente"></div>
+                <div class="form-group"><label>Aporta al sustento económico</label>
+                  <select class="select" name="aportaEconomicoAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Condiciones especiales (puede marcar varias)</label>
+                <div class="radio-stack">
+                  <label class="radio-pill"><input type="checkbox" name="acudienteCondicionDiscapacidad" value="Si"> Discapacidad</label>
+                  <label class="radio-pill"><input type="checkbox" name="acudienteCondicionEnfermedad" value="Si"> Enfermedad crónica</label>
+                  <label class="radio-pill"><input type="checkbox" name="acudienteCondicionNinguna" value="Si"> Ninguna</label>
+                  <label class="radio-pill"><input type="checkbox" name="acudienteCondicionOtraCheck" value="Si"> Otra</label>
+                </div>
+                <input class="field" type="text" name="acudienteCondicionOtra" placeholder="Si marcó Otra, ¿cuál?">
+              </div>
+            </div>
           </article>
 
           <article class="subsection">
             <h3>Vivienda, Servicios y Relaciones</h3>
-            <div class="form-group"><label>Características de vivienda y habitabilidad (tenencia, tiempo de permanencia, número de convivientes, riesgos, condiciones de sueño, espacios independientes, aseo)</label><textarea class="textarea" name="viviendaHabitabilidad"></textarea></div>
-            <div class="form-group"><label>Servicios domiciliarios, agua, basuras, sanitario y entorno cercano</label><textarea class="textarea" name="serviciosEntorno"></textarea></div>
-            <div class="form-group"><label>Relaciones familiares, actividades de vínculo, acciones de cuidado, motivos de disgusto, solución de problemas, participación en hogar e incentivos</label><textarea class="textarea" name="relacionesFamiliares"></textarea></div>
+            <div class="form-group">
+              <label>Tipo de vivienda</label>
+              <select class="select" name="tipoViviendaFamiliar">
+                <option value="">Seleccione...</option>
+                <option value="Casa">Casa</option>
+                <option value="Apartamento">Apartamento</option>
+                <option value="Finca">Finca</option>
+                <option value="Cuarto">Cuarto</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tipo de tenencia</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="tenenciaPropia" value="Si"> Propia</label>
+                <label class="radio-pill"><input type="checkbox" name="tenenciaArriendo" value="Si"> Arriendo</label>
+                <label class="radio-pill"><input type="checkbox" name="tenenciaFamiliar" value="Si"> Familiar / Prestada</label>
+                <label class="radio-pill"><input type="checkbox" name="tenenciaOtraCheck" value="Si"> Otra</label>
+              </div>
+              <input class="field" type="text" name="tenenciaOtra" placeholder="Si marcó Otra, ¿cuál?">
+            </div>
+            <div class="form-group">
+              <label>Condiciones de habitabilidad</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="habitacionConAdultos" value="Si"> Niña/o duerme con adultos en la misma habitación</label>
+                <label class="radio-pill"><input type="checkbox" name="camaConAdultos" value="Si"> Niña/o duerme con adultos en la misma cama</label>
+                <label class="radio-pill"><input type="checkbox" name="espaciosIndependientesHogar" value="Si"> Tiene espacios independientes (dormitorio, cocina, baño)</label>
+                <label class="radio-pill"><input type="checkbox" name="espaciosAseadosHogar" value="Si"> Espacios aseados</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Servicios domiciliarios y entorno cercano (puede marcar varias)</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioEnergia" value="Si"> Energía</label>
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioAcueducto" value="Si"> Acueducto</label>
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioAlcantarillado" value="Si"> Alcantarillado</label>
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioGas" value="Si"> Gas</label>
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioInternet" value="Si"> Internet</label>
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioCelular" value="Si"> Telefonía celular</label>
+                <label class="radio-pill"><input type="checkbox" name="familiarServicioFija" value="Si"> Telefonía fija</label>
+                <label class="radio-pill"><input type="checkbox" name="entornoSalud" value="Si"> Cerca hay centro de salud / hospital</label>
+                <label class="radio-pill"><input type="checkbox" name="entornoEscuela" value="Si"> Cerca hay sedes educativas</label>
+                <label class="radio-pill"><input type="checkbox" name="entornoTransporte" value="Si"> Cerca hay transporte público</label>
+                <label class="radio-pill"><input type="checkbox" name="entornoParques" value="Si"> Cerca hay parques / espacios recreativos</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Relaciones familiares y dinámicas del hogar (puede marcar varias)</label>
+              <div class="radio-stack">
+                <label class="radio-pill"><input type="checkbox" name="familiaComparteDificultades" value="Si"> La familia comparte dificultades entre sí</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaComparteLogros" value="Si"> La familia comparte acontecimientos especiales</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaActividadesJuego" value="Si"> Realizan juegos, lectura o actividades de aprendizaje</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaActividadesComunitarias" value="Si"> Participan en actividades comunitarias/familiares</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaMotivoDisgustoEconomico" value="Si"> Disgustos frecuentes por problemas económicos</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaMotivoDisgustoComunicacion" value="Si"> Disgustos frecuentes por comunicación/autoridad</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaNinosParticipanHogar" value="Si"> Niñas/os participan en actividades del hogar</label>
+                <label class="radio-pill"><input type="checkbox" name="familiaReconoceLogrosNinos" value="Si"> Se reconocen los logros de niñas/os</label>
+              </div>
+            </div>
           </article>
         </section>
 

@@ -169,7 +169,7 @@ function bindEvents() {
   ui.dom.fechaNacimiento.addEventListener('change', ui.calculateAge);
 
   ui.dom.form.addEventListener('change', (event) => {
-    if (['tieneDiscapacidad', 'perteneceEtnia', 'tipoEtnia'].includes(event.target.name)) {
+    if (['tieneDiscapacidad', 'perteneceEtnia', 'tipoEtnia', 'afiliadoSalud', 'padreNoAplica', 'acudienteNoAplica'].includes(event.target.name)) {
       ui.toggleConditional();
     }
     syncDraft();

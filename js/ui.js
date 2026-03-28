@@ -30,7 +30,10 @@ export function createUI(config) {
     edad: document.getElementById('edad'),
     categoriaDiscapacidadGroup: document.getElementById('categoriaDiscapacidadGroup'),
     tipoEtniaGroup: document.getElementById('tipoEtniaGroup'),
-    puebloIndigenaGroup: document.getElementById('puebloIndigenaGroup')
+    puebloIndigenaGroup: document.getElementById('puebloIndigenaGroup'),
+    afiliadoSaludCualGroup: document.getElementById('afiliadoSaludCualGroup'),
+    padreFields: document.getElementById('padreFields'),
+    acudienteFields: document.getElementById('acudienteFields')
   };
 
   function showAlert(message, type = 'success') {
@@ -94,6 +97,23 @@ export function createUI(config) {
     const data = new FormData(dom.form);
     const out = {};
     for (const [key, value] of data.entries()) out[key] = value;
+
+    // Guardar estado explícito para checkboxes no marcados.
+    const checkboxes = dom.form.querySelectorAll('input[type="checkbox"][name]');
+    checkboxes.forEach((checkbox) => {
+      if (!out[checkbox.name]) out[checkbox.name] = 'No';
+    });
+
+    // Si preguntas abiertas se dejan vacías, enviar "Ninguno".
+    const openFields = dom.form.querySelectorAll('textarea[name], input[type="text"][name], input[type="tel"][name]');
+    openFields.forEach((field) => {
+      if (field.disabled) return;
+      if (field.required) return;
+      const current = out[field.name];
+      if (current !== undefined && String(current).trim() !== '') return;
+      out[field.name] = 'Ninguno';
+    });
+
     return out;
   }
 
@@ -131,6 +151,12 @@ export function createUI(config) {
         const fixedValue = lower === 'sí' || lower === 'si' ? 'Si' : (lower === 'no' ? 'No' : rawValue);
         const option = dom.form.querySelector(`input[name="${key}"][value="${fixedValue}"]`);
         if (option) option.checked = true;
+        return;
+      }
+
+      if (element.type === 'checkbox') {
+        const rawValue = String(data[rawKey] ?? '').trim().toLowerCase();
+        element.checked = ['si', 'sí', 'true', '1', 'x', 'yes'].includes(rawValue);
         return;
       }
 
@@ -198,11 +224,34 @@ export function createUI(config) {
   function toggleConditional() {
     const discapacidad = dom.form.querySelector('input[name="tieneDiscapacidad"]:checked');
     const etnia = dom.form.querySelector('input[name="perteneceEtnia"]:checked');
+    const afiliadoSalud = dom.form.querySelector('input[name="afiliadoSalud"]:checked');
     const tipoEtnia = dom.form.elements.tipoEtnia ? dom.form.elements.tipoEtnia.value : '';
+    const padreNoAplica = dom.form.querySelector('input[name="padreNoAplica"]')?.checked;
+    const acudienteNoAplica = dom.form.querySelector('input[name="acudienteNoAplica"]')?.checked;
 
     dom.categoriaDiscapacidadGroup.classList.toggle('hidden', discapacidad?.value !== 'Si');
     dom.tipoEtniaGroup.classList.toggle('hidden', etnia?.value !== 'Si');
     dom.puebloIndigenaGroup.classList.toggle('hidden', tipoEtnia !== 'Indigena');
+    dom.afiliadoSaludCualGroup.classList.toggle('hidden', afiliadoSalud?.value !== 'Si');
+
+    toggleGroupEnabled(dom.padreFields, !padreNoAplica);
+    toggleGroupEnabled(dom.acudienteFields, !acudienteNoAplica);
+  }
+
+  function toggleGroupEnabled(groupElement, enabled) {
+    if (!groupElement) return;
+    groupElement.classList.toggle('hidden', !enabled);
+    const fields = groupElement.querySelectorAll('input, select, textarea');
+    fields.forEach((field) => {
+      field.disabled = !enabled;
+      if (!enabled) {
+        if (field.type === 'checkbox' || field.type === 'radio') {
+          field.checked = false;
+        } else {
+          field.value = '';
+        }
+      }
+    });
   }
 
   return {
