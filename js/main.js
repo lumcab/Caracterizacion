@@ -9,6 +9,7 @@ const ui = createUI(APP_CONFIG);
 
 let isSubmitting = false;
 let ultimoDocumento = '';
+let recordMode = 'new';
 
 function hydrateDraft() {
   const draft = loadDraft();
@@ -52,6 +53,8 @@ function newRecord() {
   navigator.setIndex(0);
   updateNavigationUI();
   clearDraft();
+  recordMode = 'new';
+  ui.setSubmitActionLabel('Guardar Registro');
   ui.showAlert('Formulario limpio y listo para un nuevo registro.', 'info');
 }
 
@@ -67,7 +70,17 @@ async function handleSearch() {
   try {
     const data = await searchByDocument(APP_CONFIG, doc);
     if (!data) {
-      ui.showAlert('No se encontró información para ese documento.', 'danger');
+      ui.dom.form.reset();
+      if (ui.dom.form.elements.numeroDocumento) {
+        ui.dom.form.elements.numeroDocumento.value = doc;
+      }
+      ui.toggleConditional();
+      navigator.setIndex(0);
+      updateNavigationUI();
+      recordMode = 'new';
+      ui.setSubmitActionLabel('Guardar Registro');
+      ui.hideSavePanel();
+      ui.showAlert('No existe ese documento en la base. Puedes registrar un nuevo estudiante.', 'info');
       return;
     }
 
@@ -76,8 +89,10 @@ async function handleSearch() {
     navigator.setIndex(0);
     updateNavigationUI();
     ultimoDocumento = doc;
+    recordMode = 'update';
+    ui.setSubmitActionLabel('Actualizar Datos');
     ui.hideSavePanel();
-    ui.showAlert(`Registro encontrado para documento ${doc}.`, 'info');
+    ui.showAlert(`Registro encontrado para documento ${doc}. Puedes actualizar los datos y guardar.`, 'success');
   } catch (error) {
     ui.showAlert(`Error al buscar: ${error.message}`, 'danger');
   } finally {
@@ -109,12 +124,16 @@ async function handleSubmit(event) {
   try {
     payload.fechaRegistro = new Date().toLocaleString('es-CO');
     payload.fechaRegistroISO = new Date().toISOString();
+    payload.modoRegistro = recordMode === 'update' ? 'actualizar_existente' : 'nuevo_registro';
 
     await saveRecord(APP_CONFIG, payload);
 
     ultimoDocumento = numeroDocumento;
-    ui.showAlert('Registro guardado en la nube correctamente.', 'success');
-    ui.showSavePanel(`Datos guardados para documento ${numeroDocumento}. Puedes editarlo o crear uno nuevo.`);
+    const msg = recordMode === 'update'
+      ? 'Registro actualizado en la nube correctamente.'
+      : 'Registro guardado en la nube correctamente.';
+    ui.showAlert(msg, 'success');
+    ui.showSavePanel(`${msg} Documento: ${numeroDocumento}. Puedes editarlo o crear otro registro.`);
 
     clearDraft();
     setTimeout(() => {
@@ -167,6 +186,7 @@ function bindEvents() {
 async function init() {
   bindEvents();
   hydrateDraft();
+  ui.setSubmitActionLabel('Guardar Registro');
   ui.toggleConditional();
   updateNavigationUI();
   await refreshStats();

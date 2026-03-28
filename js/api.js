@@ -14,6 +14,10 @@ function normalizeKey(value) {
     .toLowerCase();
 }
 
+function normalizeDocument(value) {
+  return String(value || '').replace(/\D/g, '');
+}
+
 async function fetchJson(url, options) {
   const resp = await fetch(url, options);
   const raw = await resp.text();
@@ -68,6 +72,7 @@ function normalizeSearchResponse(data) {
 export async function searchByDocument(config, documento) {
   const doc = String(documento || '').trim();
   if (!doc) return null;
+  const docNormalized = normalizeDocument(doc);
 
   try {
     const response = await fetchJson(`${config.googleScriptUrl}?action=search&doc=${encodeURIComponent(doc)}`);
@@ -80,7 +85,10 @@ export async function searchByDocument(config, documento) {
   const rows = await fetchSheetRows(config);
   const keys = ['numerodocumento', 'documento', 'doc', 'identificacion', 'documentodeidentidad'];
 
-  const row = rows.find((item) => keys.some((key) => String(item[key] || '').trim() === doc));
+  const row = rows.find((item) => keys.some((key) => {
+    const raw = String(item[key] || '').trim();
+    return raw === doc || normalizeDocument(raw) === docNormalized;
+  }));
   return row || null;
 }
 

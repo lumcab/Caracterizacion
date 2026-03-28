@@ -69,7 +69,13 @@ export function createUI(config) {
   function setSubmitting(value) {
     dom.loadingIndicator.classList.toggle('show', value);
     dom.conexionEstado.textContent = value ? 'Guardando...' : 'Lista';
-    dom.submitBtn.textContent = value ? 'Guardando...' : 'Guardar Registro';
+    const baseLabel = dom.submitBtn.dataset.baseLabel || 'Guardar Registro';
+    dom.submitBtn.textContent = value ? 'Guardando...' : baseLabel;
+  }
+
+  function setSubmitActionLabel(label) {
+    dom.submitBtn.dataset.baseLabel = label;
+    dom.submitBtn.textContent = label;
   }
 
   function updateStats(stats) {
@@ -98,18 +104,31 @@ export function createUI(config) {
       numerodocumento: 'numeroDocumento',
       documento: 'numeroDocumento',
       doc: 'numeroDocumento',
+      numerodoc: 'numeroDocumento',
+      identificacion: 'numeroDocumento',
+      documentodeidentidad: 'numeroDocumento',
+      tipodocumento: 'tipoDocumento',
       nombre: 'nombres',
       apellido: 'apellidos'
     };
 
+    const formNameByNormalized = {};
+    Array.from(dom.form.elements).forEach((element) => {
+      if (!element?.name) return;
+      const norm = normalizeKey(element.name);
+      if (!formNameByNormalized[norm]) formNameByNormalized[norm] = element.name;
+    });
+
     Object.keys(data).forEach((rawKey) => {
-      const key = alias[normalizeKey(rawKey)] || rawKey;
+      const rawNorm = normalizeKey(rawKey);
+      const key = alias[rawNorm] || formNameByNormalized[rawNorm] || rawKey;
       const element = dom.form.elements[key];
       if (!element) return;
 
       if (element instanceof RadioNodeList) {
         const rawValue = String(data[rawKey] ?? '').trim();
-        const fixedValue = rawValue.toLowerCase() === 'sí' ? 'Si' : rawValue;
+        const lower = rawValue.toLowerCase();
+        const fixedValue = lower === 'sí' || lower === 'si' ? 'Si' : (lower === 'no' ? 'No' : rawValue);
         const option = dom.form.querySelector(`input[name="${key}"][value="${fixedValue}"]`);
         if (option) option.checked = true;
         return;
@@ -192,6 +211,7 @@ export function createUI(config) {
     showSection,
     updateNavButtons,
     setSubmitting,
+    setSubmitActionLabel,
     updateStats,
     serializeForm,
     fillForm,
