@@ -2,6 +2,8 @@
 
 (() => {
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZUnnhCw5KiCK1lvPFrTEKkR_JdPNa5Srig6cPA4wccN9uQWuBNBoA_IhY4uYNhBcLag/exec';
+  const SHEET_ID = '1ndYw8lA_7qO7o-0-9OT9B7kTOAwKu_Jy3RI7eYTo0w8';
+  const SHEET_GID = '0';
 
   const state = {
     currentSection: 1,
@@ -147,6 +149,62 @@
     return parseJsonSafe(raw);
   }
 
+  function normalizeFieldName(value) {
+    if (!value) return '';
+    return String(value)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]/g, '')
+      .toLowerCase();
+  }
+
+  function gvizToObjects(gvizPayload) {
+    if (!gvizPayload || !gvizPayload.table || !Array.isArray(gvizPayload.table.cols)) return [];
+    const cols = gvizPayload.table.cols.map((col, index) => {
+      const header = col.label || col.id || `col_${index + 1}`;
+      return {
+        raw: header,
+        key: normalizeFieldName(header)
+      };
+    });
+
+    const rows = Array.isArray(gvizPayload.table.rows) ? gvizPayload.table.rows : [];
+    const objects = [];
+
+    for (const row of rows) {
+      const out = {};
+      const cells = Array.isArray(row.c) ? row.c : [];
+      cols.forEach((col, idx) => {
+        const cell = cells[idx];
+        out[col.raw] = cell && cell.v !== null && cell.v !== undefined ? cell.v : '';
+        out[col.key] = out[col.raw];
+      });
+      objects.push(out);
+    }
+
+    return objects;
+  }
+
+  async function fetchRowsFromSheet() {
+    const gvizUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${SHEET_GID}&tqx=out:json`;
+    const resp = await fetch(gvizUrl);
+    const raw = await resp.text();
+
+    const start = raw.indexOf('{');
+    const end = raw.lastIndexOf('}');
+    if (start < 0 || end < 0 || end <= start) {
+      throw new Error('No se pudo leer la respuesta de la hoja de cálculo.');
+    }
+
+    const jsonText = raw.slice(start, end + 1);
+    const parsed = parseJsonSafe(jsonText);
+    if (!parsed) {
+      throw new Error('La hoja de cálculo no devolvió datos en formato válido.');
+    }
+
+    return gvizToObjects(parsed);
+  }
+
   function pickFirstDefined(obj, keys) {
     for (const key of keys) {
       if (
@@ -171,6 +229,59 @@
     if (payload.data && typeof payload.data === 'object' && !Array.isArray(payload.data) && !payload.data.length) return payload.data;
     if (payload.record && typeof payload.record === 'object') return payload.record;
     return null;
+  }
+
+  function findRecordByDocumentInRows(rows, documento) {
+    const target = String(documento || '').trim();
+    if (!target) return null;
+
+    const candidateKeys = [
+      'numerodocumento',
+      'documento',
+      'doc',
+      'numero_doc',
+      'identificacion',
+      'documentodeidentidad'
+    ];
+
+    for (const row of rows) {
+      const normalizedEntries = Object.entries(row || {}).map(([k, v]) => [normalizeFieldName(k), v]);
+      for (const [key, value] of normalizedEntries) {
+        if (!candidateKeys.includes(key)) continue;
+        if (String(value || '').trim() === target) {
+          return row;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function mapSheetRowToFormData(row) {
+    if (!row || typeof row !== 'object') return null;
+
+    const mapped = {};
+    const aliasMap = {
+      numeroDocumento: ['numerodocumento', 'documento', 'doc', 'identificacion', 'documentodeidentidad'],
+      nombres: ['nombres', 'nombre'],
+      apellidos: ['apellidos', 'apellido']
+    };
+
+    Object.keys(row).forEach((rawKey) => {
+      const normKey = normalizeFieldName(rawKey);
+      mapped[rawKey] = row[rawKey];
+      mapped[normKey] = row[rawKey];
+    });
+
+    const out = {};
+    Object.keys(aliasMap).forEach((targetKey) => {
+      const keyFound = aliasMap[targetKey].find((k) => mapped[k] !== undefined && mapped[k] !== null && String(mapped[k]).trim() !== '');
+      if (keyFound) out[targetKey] = mapped[keyFound];
+    });
+
+    // Mantener también todas las llaves posibles para que fillFormFromObject pueda aprovecharlas.
+    Object.assign(out, mapped);
+    return out;
   }
 
   function normalizeSiValue(value) {
@@ -245,8 +356,36 @@
       }
     }
 
-    applyStats({ total: '-', ultima: '-' });
-    return false;
+    // Respaldo: lectura directa de la hoja.
+    try {
+      const rows = await fetchRowsFromSheet();
+      let lastDate = null;
+      for (const row of rows) {
+        const candidate = pickFirstDefined(row, [
+          'fechaRegistroISO',
+          'fecharegistroiso',
+          'fechaRegistro',
+          'fecharegistro',
+          'updatedAt',
+          'updatedat',
+          'lastModified',
+          'lastmodified'
+        ]);
+        if (!candidate) continue;
+        const d = new Date(candidate);
+        if (Number.isNaN(d.getTime())) continue;
+        if (!lastDate || d > lastDate) lastDate = d;
+      }
+
+      applyStats({
+        total: rows.length,
+        ultima: lastDate ? lastDate.toISOString() : '-'
+      });
+      return true;
+    } catch {
+      applyStats({ total: '-', ultima: '-' });
+      return false;
+    }
   }
 
   function fillFormFromObject(data) {
@@ -304,18 +443,33 @@
       const data = await fetchJsonSafe(`${GOOGLE_SCRIPT_URL}?action=search&doc=${encodeURIComponent(docBusqueda)}`);
       const estudiante = normalizeSearchPayload(data);
 
-      if (!estudiante) {
+      if (estudiante) {
+        dom.form.reset();
+        fillFormFromObject(estudiante);
+        state.currentSection = 1;
+        state.ultimoDocumentoGuardado = docBusqueda;
+        dom.savePanel.classList.remove('show');
+        showSection(1);
+        showAlert(`Registro encontrado para documento ${docBusqueda}. Puede editar y volver a guardar.`, 'info');
+        return;
+      }
+
+      // Respaldo: buscar directo en la hoja.
+      const rows = await fetchRowsFromSheet();
+      const foundRow = findRecordByDocumentInRows(rows, docBusqueda);
+
+      if (!foundRow) {
         showAlert('No se encontró información para ese documento.', 'danger');
         return;
       }
 
       dom.form.reset();
-      fillFormFromObject(estudiante);
+      fillFormFromObject(mapSheetRowToFormData(foundRow));
       state.currentSection = 1;
       state.ultimoDocumentoGuardado = docBusqueda;
       dom.savePanel.classList.remove('show');
       showSection(1);
-      showAlert(`Registro encontrado para documento ${docBusqueda}. Puede editar y volver a guardar.`, 'info');
+      showAlert(`Registro encontrado para documento ${docBusqueda}.`, 'info');
     } catch (error) {
       showAlert(`Error al buscar: ${error.message}`, 'danger');
     } finally {
