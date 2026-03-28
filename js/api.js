@@ -73,16 +73,29 @@ export async function searchByDocument(config, documento) {
   const doc = String(documento || '').trim();
   if (!doc) return null;
   const docNormalized = normalizeDocument(doc);
+  let lastError = null;
 
   try {
     const response = await fetchJson(`${config.googleScriptUrl}?action=search&doc=${encodeURIComponent(doc)}`);
     const normalized = normalizeSearchResponse(response);
     if (normalized) return normalized;
-  } catch (_) {
-    // fallback
+  } catch (error) {
+    lastError = error;
   }
 
-  const rows = await fetchSheetRows(config);
+  let rows = [];
+  try {
+    rows = await fetchSheetRows(config);
+  } catch (error) {
+    lastError = error;
+  }
+
+  if (!rows.length && lastError) {
+    const connectivityError = new Error('No se pudo conectar con la base de datos en la nube.');
+    connectivityError.code = 'CLOUD_UNREACHABLE';
+    throw connectivityError;
+  }
+
   const keys = ['numerodocumento', 'documento', 'doc', 'identificacion', 'documentodeidentidad'];
 
   const row = rows.find((item) => keys.some((key) => {

@@ -94,7 +94,24 @@ async function handleSearch() {
     ui.hideSavePanel();
     ui.showAlert(`Registro encontrado para documento ${doc}. Puedes actualizar los datos y guardar.`, 'success');
   } catch (error) {
-    ui.showAlert(`Error al buscar: ${error.message}`, 'danger');
+    ui.dom.form.reset();
+    if (ui.dom.form.elements.numeroDocumento) {
+      ui.dom.form.elements.numeroDocumento.value = doc;
+    }
+    ui.toggleConditional();
+    navigator.setIndex(0);
+    recordMode = 'new';
+    ui.setSubmitActionLabel('Guardar Registro');
+    updateNavigationUI();
+
+    if (error?.code === 'CLOUD_UNREACHABLE') {
+      ui.showAlert(
+        'No se pudo conectar con la base en la nube. Puedes continuar diligenciando y guardar; revisa conexión, permisos del Apps Script y acceso a Google Sheets.',
+        'danger'
+      );
+    } else {
+      ui.showAlert(`Error al buscar: ${error.message}`, 'danger');
+    }
   } finally {
     ui.dom.conexionEstado.textContent = 'Lista';
   }
