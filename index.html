@@ -3,550 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Caracterización - Plan de Orientación Escolar</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .toolbar {
-            background: #f8f9fa;
-            padding: 15px 30px;
-            border-bottom: 2px solid #e9ecef;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .toolbar input {
-            padding: 8px 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-            font-size: 14px;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .toolbar button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .btn-search {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .btn-new {
-            background: #28a745;
-            color: white;
-        }
-
-        .toolbar button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .stats {
-            background: #e7f3ff;
-            padding: 10px 30px;
-            border-bottom: 2px solid #bee5eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .stats-item {
-            font-size: 14px;
-            color: #0c5460;
-        }
-
-        .stats-item strong {
-            font-size: 18px;
-            color: #004085;
-        }
-
-        .connection-status {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #dc3545;
-            margin-right: 5px;
-        }
-
-        .connection-status.connected {
-            background: #28a745;
-        }
-
-        .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 30px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
-        }
-
-        .progress-step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            padding: 10px;
-        }
-
-        .progress-step::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #dee2e6;
-            z-index: 0;
-        }
-
-        .progress-step:first-child::before {
-            left: 50%;
-        }
-
-        .progress-step:last-child::before {
-            right: 50%;
-        }
-
-        .step-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #dee2e6;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }
-
-        .progress-step.active .step-circle {
-            background: #667eea;
-            border-color: #667eea;
-            color: white;
-        }
-
-        .progress-step.completed .step-circle {
-            background: #28a745;
-            border-color: #28a745;
-            color: white;
-        }
-
-        .step-label {
-            display: block;
-            margin-top: 8px;
-            font-size: 12px;
-            color: #6c757d;
-            font-weight: 500;
-        }
-
-        .progress-step.active .step-label {
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .form-content {
-            padding: 40px;
-        }
-
-        .form-section {
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-title {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #667eea;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #495057;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .form-group label.required::after {
-            content: '*';
-            color: #dc3545;
-            margin-left: 4px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-group input:read-only {
-            background: #e9ecef;
-            cursor: not-allowed;
-        }
-
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .checkbox-group,
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .checkbox-item,
-        .radio-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .checkbox-item:hover,
-        .radio-item:hover {
-            background: #f8f9fa;
-            border-color: #667eea;
-        }
-
-        .checkbox-item input,
-        .radio-item input {
-            width: auto;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid #e9ecef;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .alert.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .alert-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        .alert-danger {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        .alert-info {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
-        }
-
-        .subsection {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-
-        .subsection-title {
-            font-size: 18px;
-            color: #495057;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .info-box {
-            background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .info-box p {
-            margin: 0;
-            color: #0c5460;
-            font-size: 14px;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .form-content {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .section-title {
-                font-size: 20px;
-            }
-
-            .toolbar {
-                padding: 15px;
-            }
-
-            .stats {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+    <title>Caracterización Estudiante y Familiar</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📋 Formulario de Caracterización</h1>
-            <p>Plan de Orientación Escolar - Colegio Huila, Colombia</p>
-            <p style="font-size: 13px; margin-top: 10px; opacity: 0.85;">
-                ☁️ Los datos se guardan automáticamente en Google Sheets
-            </p>
+            <h1>Formulario de Caracterización POE</h1>
+            <p>Encuesta oficial de la Secretaría de Educación del Huila. La información diligenciada y almacenada se utiliza para la caracterización del sector educativo y para orientar acciones de mejoramiento de la calidad educativa, el acompañamiento pedagógico y la participación de las familias.</p>
+            <span class="chip">☁️ Guardado en Google Sheets (archivo en la nube existente)</span>
         </div>
 
         <div class="toolbar">
-            <input type="text" id="searchDoc" placeholder="🔍 Buscar por Nº de Documento..." />
-            <button class="btn-search" onclick="buscarEstudiante()">🔍 Buscar</button>
-            <button class="btn-new" onclick="nuevoRegistro()">➕ Nuevo</button>
+            <input type="text" id="searchDoc" placeholder="Buscar por número de documento" />
+            <button class="btn-search" type="button" id="searchBtn">Buscar</button>
+            <button class="btn-new" type="button" id="newBtn">Nuevo Registro</button>
         </div>
 
         <div class="stats">
-            <div class="stats-item">
-                📚 Registros en esta sesión: <strong id="totalEstudiantes">0</strong>
-            </div>
-            <div class="stats-item">
-                💾 Última actualización: <strong id="ultimaActualizacion">-</strong>
-            </div>
+            <div class="stats-item">Registros en la base (Drive): <strong id="totalEstudiantes">-</strong></div>
+            <div class="stats-item">Último registro/cambio en la base: <strong id="ultimaActualizacion">-</strong></div>
+            <div class="stats-item">Conexión: <strong id="conexionEstado">Lista</strong></div>
         </div>
 
         <div class="progress-bar">
             <div class="progress-step active" data-step="1">
                 <span class="step-circle">1</span>
-                <span class="step-label">Datos Personales</span>
+                <span>Datos del estudiante</span>
             </div>
             <div class="progress-step" data-step="2">
                 <span class="step-circle">2</span>
-                <span class="step-label">Académico y Socioemocional</span>
+                <span>Académico y socioemocional</span>
             </div>
             <div class="progress-step" data-step="3">
                 <span class="step-circle">3</span>
-                <span class="step-label">Caracterización Familiar</span>
+                <span>Módulo familiar</span>
             </div>
         </div>
 
         <form id="caracterizacionForm">
             <div class="form-content">
                 <div id="alertContainer"></div>
-                
+
                 <div class="loading" id="loadingIndicator">
                     <div class="spinner"></div>
-                    <p style="margin-top: 10px; color: #667eea;">Guardando en Google Sheets...</p>
+                    <p style="margin-top:10px; color:#0369a1;">Guardando registro en Google Sheets...</p>
                 </div>
 
-                <!-- SECCIÓN 1: DATOS PERSONALES DEL ESTUDIANTE -->
                 <div class="form-section active" data-section="1">
                     <h2 class="section-title">Datos Personales del Estudiante</h2>
-                    
-                    <div class="info-box">
-                        <p>📌 Complete todos los campos marcados con asterisco (*). La edad se calcula automáticamente desde la fecha de nacimiento.</p>
-                    </div>
+                    <div class="info-box">Complete los campos obligatorios. La edad se calcula automáticamente a partir de la fecha de nacimiento.</div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="required">Tipo de Documento</label>
+                            <label class="required">Tipo de documento de identidad</label>
                             <select name="tipoDocumento" required>
                                 <option value="">Seleccione...</option>
                                 <option value="TI">Tarjeta de Identidad</option>
@@ -555,9 +65,8 @@
                                 <option value="CE">Cédula de Extranjería</option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label class="required">Número de Documento</label>
+                            <label class="required">Número de documento</label>
                             <input type="text" name="numeroDocumento" id="numeroDocumento" required placeholder="Ej: 1234567890">
                         </div>
                     </div>
@@ -565,26 +74,23 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label class="required">Nombres</label>
-                            <input type="text" name="nombres" required placeholder="Nombres completos">
+                            <input type="text" name="nombres" required>
                         </div>
-
                         <div class="form-group">
                             <label class="required">Apellidos</label>
-                            <input type="text" name="apellidos" required placeholder="Apellidos completos">
+                            <input type="text" name="apellidos" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="required">Fecha de Nacimiento</label>
+                            <label class="required">Fecha de nacimiento</label>
                             <input type="date" name="fechaNacimiento" id="fechaNacimiento" required>
                         </div>
-
                         <div class="form-group">
-                            <label class="required">Edad (calculada automáticamente)</label>
-                            <input type="number" name="edad" id="edad" readonly placeholder="Se calcula automáticamente">
+                            <label class="required">Edad</label>
+                            <input type="number" name="edad" id="edad" readonly required>
                         </div>
-
                         <div class="form-group">
                             <label class="required">Sexo</label>
                             <select name="sexo" required>
@@ -597,10 +103,9 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="required">País de Nacimiento</label>
+                            <label class="required">País de nacimiento</label>
                             <input type="text" name="paisNacimiento" required value="Colombia">
                         </div>
-
                         <div class="form-group">
                             <label class="required">Nacionalidad</label>
                             <input type="text" name="nacionalidad" required value="Colombiana">
@@ -609,46 +114,102 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="required">Municipio de Residencia</label>
-                            <input type="text" name="municipioResidencia" required placeholder="Municipio">
+                            <label class="required">Municipio de residencia</label>
+                            <input type="text" name="municipioResidencia" required>
                         </div>
-
                         <div class="form-group">
-                            <label class="required">Barrio/Vereda/Comuna</label>
-                            <input type="text" name="barrioVereda" required placeholder="Barrio o Vereda">
+                            <label class="required">Barrio/Vereda/Comuna/Resguardo</label>
+                            <input type="text" name="barrioVereda" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="required">Teléfono del Acudiente</label>
-                            <input type="tel" name="telefonoAcudiente" required placeholder="3001234567">
+                            <label class="required">Teléfono del acudiente</label>
+                            <input type="tel" name="telefonoAcudiente" required>
                         </div>
-
                         <div class="form-group">
-                            <label class="required">Lengua Principal</label>
+                            <label class="required">Lengua principal</label>
                             <input type="text" name="lenguaPrincipal" required value="Español">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Lengua Secundaria</label>
-                            <input type="text" name="lenguaSecundaria" placeholder="Ej: Inglés, otra lengua">
+                            <label>Lengua secundaria</label>
+                            <input type="text" name="lenguaSecundaria">
                         </div>
                     </div>
 
                     <div class="subsection">
-                        <h3 class="subsection-title">Información Institucional</h3>
-                        
+                        <h3 class="subsection-title">Información Étnica y Salud</h3>
+
+                        <div class="form-group">
+                            <label class="required">¿Pertenece a comunidad étnica?</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="perteneceEtnia" value="Si" required> Sí</label>
+                                <label class="radio-item"><input type="radio" name="perteneceEtnia" value="No" required> No</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="tipoEtniaGroup" style="display:none;">
+                            <label>Tipo de Étnia</label>
+                            <select name="tipoEtnia">
+                                <option value="">Seleccione...</option>
+                                <option value="Indigena">Indígena</option>
+                                <option value="Afrodescendiente">Afrodescendiente</option>
+                                <option value="Raizal">Raizal</option>
+                                <option value="Palenquero">Palenquero</option>
+                                <option value="Gitano">Gitano/ROM</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="puebloIndigenaGroup" style="display:none;">
+                            <label>Si es indígena, mencione el pueblo o resguardo</label>
+                            <input type="text" name="puebloIndigena">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">¿Tiene discapacidad?</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="tieneDiscapacidad" value="Si" required> Sí</label>
+                                <label class="radio-item"><input type="radio" name="tieneDiscapacidad" value="No" required> No</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="categoriaDiscapacidadGroup" style="display:none;">
+                            <label>Categoría de Discapacidad</label>
+                            <select name="categoriaDiscapacidad">
+                                <option value="">Seleccione...</option>
+                                <option value="Fisica">Física</option>
+                                <option value="Visual">Visual</option>
+                                <option value="Auditiva">Auditiva</option>
+                                <option value="Cognitiva">Cognitiva</option>
+                                <option value="Psicosocial">Psicosocial</option>
+                                <option value="Multiple">Múltiple</option>
+                                <option value="Otra">Otra</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">¿El o la estudiante está afiliado(a) al Sistema de Seguridad Social en Salud?</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="afiliadoSalud" value="Si" required> Sí</label>
+                                <label class="radio-item"><input type="radio" name="afiliadoSalud" value="No" required> No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Institución, Vivienda y Riesgos</h3>
+
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="required">Nombre de la Institución Educativa</label>
-                                <input type="text" name="institucionEducativa" required placeholder="Nombre del colegio">
+                                <label class="required">Nombre de la institución educativa</label>
+                                <input type="text" name="institucionEducativa" required>
                             </div>
-
                             <div class="form-group">
-                                <label class="required">Grado Escolar</label>
+                                <label class="required">Grado escolar</label>
                                 <select name="gradoEscolar" required>
                                     <option value="">Seleccione...</option>
                                     <option value="Transición">Transición</option>
@@ -666,95 +227,10 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Salud y Seguridad Social</h3>
-                        
-                        <div class="form-group">
-                            <label class="required">¿El estudiante se encuentra afiliado al Sistema de Seguridad Social en Salud?</label>
-                            <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="afiliadoSalud" value="Si" required>
-                                    Sí
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="afiliadoSalud" value="No" required>
-                                    No
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="required">¿Tiene discapacidad?</label>
-                            <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="tieneDiscapacidad" value="Si" required>
-                                    Sí
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="tieneDiscapacidad" value="No" required>
-                                    No
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="categoriaDiscapacidadGroup" style="display:none;">
-                            <label>Categoría de Discapacidad</label>
-                            <select name="categoriaDiscapacidad">
-                                <option value="">Seleccione...</option>
-                                <option value="Fisica">Física</option>
-                                <option value="Visual">Visual</option>
-                                <option value="Auditiva">Auditiva</option>
-                                <option value="Cognitiva">Cognitiva</option>
-                                <option value="Psicosocial">Psicosocial</option>
-                                <option value="Multiple">Múltiple</option>
-                                <option value="Otra">Otra</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Información Étnica</h3>
-                        
-                        <div class="form-group">
-                            <label class="required">¿Pertenece a comunidad étnica?</label>
-                            <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="perteneceEtnia" value="Si" required>
-                                    Sí
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="perteneceEtnia" value="No" required>
-                                    No
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group" id="tipoEtniaGroup" style="display:none;">
-                            <label>Tipo de Etnia</label>
-                            <select name="tipoEtnia">
-                                <option value="">Seleccione...</option>
-                                <option value="Indigena">Indígena</option>
-                                <option value="Afrodescendiente">Afrodescendiente</option>
-                                <option value="Raizal">Raizal</option>
-                                <option value="Palenquero">Palenquero</option>
-                                <option value="Gitano">Gitano/ROM</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" id="puebloIndigenaGroup" style="display:none;">
-                            <label>Si es indígena, mencione pueblo o resguardo</label>
-                            <input type="text" name="puebloIndigena" placeholder="Nombre del pueblo o resguardo">
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h3 class="subsection-title">Vivienda</h3>
-                        
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="required">Tipo de Vivienda</label>
+                                <label class="required">Tipo de vivienda</label>
                                 <select name="tipoVivienda" required>
                                     <option value="">Seleccione...</option>
                                     <option value="Casa">Casa</option>
@@ -763,20 +239,19 @@
                                     <option value="Otro">Otro</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <label class="required">¿La vivienda cuenta con servicios básicos?</label>
                                 <select name="serviciosBasicos" required>
                                     <option value="">Seleccione...</option>
-                                    <option value="Todos">Todos los servicios</option>
-                                    <option value="Parcial">Servicios parciales</option>
-                                    <option value="Ninguno">Sin servicios</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                    <option value="Parcial">Parcial</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="required">¿El estudiante duerme en?</label>
+                            <label class="required">¿La o el estudiante duerme en?</label>
                             <select name="estudianteDuermeEn" required>
                                 <option value="">Seleccione...</option>
                                 <option value="Cama propia">Cama propia</option>
@@ -787,423 +262,217 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="required">¿El estudiante duerme con adultos en la misma habitación?</label>
+                            <label class="required">¿La o el estudiante duerme con adultos en la misma habitación?</label>
                             <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="duermeConAdultos" value="Si" required>
-                                    Sí
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="duermeConAdultos" value="No" required>
-                                    No
-                                </label>
+                                <label class="radio-item"><input type="radio" name="duermeConAdultos" value="Si" required> Sí</label>
+                                <label class="radio-item"><input type="radio" name="duermeConAdultos" value="No" required> No</label>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="subsection">
-                        <h3 class="subsection-title">Factores de Riesgo</h3>
-                        
                         <div class="form-group">
-                            <label>Factores de riesgos en el territorio</label>
-                            <textarea name="factoresRiesgoTerritorio" placeholder="Describa factores de riesgo identificados"></textarea>
+                            <label>Factores de riesgo en el territorio</label>
+                            <textarea name="factoresRiesgoTerritorio"></textarea>
                         </div>
-
                         <div class="form-group">
                             <label>Factores de riesgo en el establecimiento educativo</label>
-                            <textarea name="factoresRiesgoColegio" placeholder="Describa factores de riesgo"></textarea>
+                            <textarea name="factoresRiesgoColegio"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECCIÓN 2: ACADÉMICO Y SOCIOEMOCIONAL -->
                 <div class="form-section" data-section="2">
-                    <h2 class="section-title">Caracterización Académica y Socioemocional</h2>
-                    
-                    <div class="info-box">
-                        <p>🎓 Esta sección nos ayuda a conocer mejor tus intereses, fortalezas y necesidades.</p>
-                    </div>
+                    <h2 class="section-title">Caracterización Académica y Socioemocional (12 a 18 años)</h2>
+                    <div class="info-box">Preguntas del formato original: Académico, Autocuidado y Cuidado Mutuo, y Socioemocional.</div>
 
                     <div class="subsection">
-                        <h3 class="subsection-title">Aspecto Académico</h3>
-                        
-                        <div class="form-group">
-                            <label>¿Qué aspectos del colegio te generan más entusiasmo o motivación?</label>
-                            <textarea name="entusiasmoMotivacion" placeholder="Comparte qué es lo que más te gusta del colegio..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo?</label>
-                            <textarea name="asignaturasFortalezas" placeholder="Menciona las asignaturas..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>¿Tienes un lugar adecuado para estudiar en casa?</label>
+                        <h3 class="subsection-title">Académico</h3>
+                        <div class="form-group"><label>¿Qué aspectos del colegio te generan más entusiasmo o motivación?</label><textarea name="entusiasmoMotivacion"></textarea></div>
+                        <div class="form-group"><label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo? (respuesta abierta)</label><textarea name="asignaturasFortalezas"></textarea></div>
+                        <div class="form-group"><label>¿Tienes un lugar adecuado para estudiar en casa?</label>
                             <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="lugarEstudio" value="Si">
-                                    Sí
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="lugarEstudio" value="No">
-                                    No
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="lugarEstudio" value="A veces">
-                                    A veces
-                                </label>
+                                <label class="radio-item"><input type="radio" name="lugarEstudio" value="Si"> Sí</label>
+                                <label class="radio-item"><input type="radio" name="lugarEstudio" value="No"> No</label>
+                                <label class="radio-item"><input type="radio" name="lugarEstudio" value="A veces"> A veces</label>
                             </div>
                         </div>
+                        <div class="form-group"><label>¿Qué estrategias usas para organizar tu tiempo escolar?</label><textarea name="estrategiasTiempoEscolar"></textarea></div>
+                        <div class="form-group"><label>¿Te sientes apoyado/a por tus profesores en tu proceso de aprendizaje?</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="apoyoProfesores" value="Si"> Sí</label>
+                                <label class="radio-item"><input type="radio" name="apoyoProfesores" value="No"> No</label>
+                                <label class="radio-item"><input type="radio" name="apoyoProfesores" value="A veces"> A veces</label>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>¿Sientes que tus intereses y habilidades son valorados en el colegio?</label><textarea name="interesesValorados"></textarea></div>
+                        <div class="form-group"><label>¿Tienes un adulto en el colegio que te inspire o te oriente en tus metas?</label><textarea name="adultoInspirador"></textarea></div>
+                        <div class="form-group"><label>¿Cómo relacionas lo que aprendes con tu proyecto de vida?</label><textarea name="aprendizajeProyectoVida"></textarea></div>
                     </div>
 
                     <div class="subsection">
-                        <h3 class="subsection-title">Aspecto Socioemocional</h3>
-                        
-                        <div class="form-group">
-                            <label>¿Cómo sueles manejar las emociones fuertes?</label>
-                            <textarea name="manejoEmociones" placeholder="Describe cómo manejas tus emociones..."></textarea>
+                        <h3 class="subsection-title">Autocuidado y Cuidado Mutuo</h3>
+                        <div class="form-group"><label>¿Qué acciones haces para cuidar tu salud física y emocional?</label><textarea name="accionesSalud"></textarea></div>
+                        <div class="form-group"><label>¿Sabes qué hacer si alguien vulnera tus derechos o te hace sentir incómodo/a?</label><textarea name="vulneracionDerechos"></textarea></div>
+                        <div class="form-group"><label>¿Has recibido orientación sobre derechos sexuales y reproductivos?</label>
+                            <div class="radio-group">
+                                <label class="radio-item"><input type="radio" name="orientacionSexualReproductiva" value="Si"> Sí</label>
+                                <label class="radio-item"><input type="radio" name="orientacionSexualReproductiva" value="No"> No</label>
+                            </div>
                         </div>
+                        <div class="form-group"><label>¿Cómo te informas sobre temas de sexualidad, consentimiento o relaciones?</label><textarea name="informacionSexualidad"></textarea></div>
+                        <div class="form-group"><label>¿Sabes a quién acudir si hay riesgo de consumo de SPA (sustancias psicoactivas)?</label><textarea name="riesgoSpa"></textarea></div>
+                        <div class="form-group"><label>¿Crees que en tu colegio hay espacios para hablar sobre salud mental, autocuidado o consumo de sustancias?</label><textarea name="espaciosSaludMental"></textarea></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label>¿Qué acciones haces para cuidar tu salud física y emocional?</label>
-                            <textarea name="accionesSalud" placeholder="Comparte qué haces para cuidarte..."></textarea>
-                        </div>
+                    <div class="subsection">
+                        <h3 class="subsection-title">Socioemocional</h3>
+                        <div class="form-group"><label>¿Cómo sueles manejar las emociones fuertes como el enojo o la tristeza?</label><textarea name="manejoEmociones"></textarea></div>
+                        <div class="form-group"><label>¿Con quién hablas cuando tienes una dificultad emocional o personal?</label><textarea name="redApoyoEmocional"></textarea></div>
+                        <div class="form-group"><label>¿Sientes que puedes ser tú mismo/a y expresar tu identidad en tu colegio?</label><textarea name="expresarIdentidad"></textarea></div>
+                        <div class="form-group"><label>¿Has identificado alguna meta personal o profesional para tu futuro?</label><textarea name="metaFutura"></textarea></div>
+                        <div class="form-group"><label>¿Te sientes representado/a y escuchado/a en el colegio?</label><textarea name="representadoEscuchado"></textarea></div>
+                        <div class="form-group"><label>¿Qué te gustaría mejorar en tu vida personal para sentirte en equilibrio?</label><textarea name="mejorarEquilibrioPersonal"></textarea></div>
                     </div>
                 </div>
 
-                <!-- SECCIÓN 3: CARACTERIZACIÓN FAMILIAR -->
                 <div class="form-section" data-section="3">
-                    <h2 class="section-title">Caracterización Familiar</h2>
-                    
-                    <div class="info-box">
-                        <p>👨‍👩‍👧‍👦 Información del contexto familiar del estudiante.</p>
-                    </div>
+                    <h2 class="section-title">Módulo Familiar</h2>
+                    <div class="info-box">Preguntas ajustadas al formato familiar oficial. Si un campo no aplica, escriba "No Aplica".</div>
 
                     <div class="subsection">
-                        <h3 class="subsection-title">Información de la Madre</h3>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Documento</label>
-                                <input type="text" name="documentoMadre" placeholder="Número de documento">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Edad</label>
-                                <input type="number" name="edadMadre" min="18" max="100">
-                            </div>
-                        </div>
+                        <h3 class="subsection-title">Composición y Estructura Familiar</h3>
+                        <div class="form-group"><label>Fecha de diligenciamiento inicial</label><input type="date" name="fechaDiligenciamientoInicial"></div>
+                        <div class="form-group"><label>Documento de identidad del estudiante (verificar duplicidad)</label><input type="text" name="docVerificacion"></div>
 
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Nivel de escolaridad</label>
-                                <select name="escolaridadMadre">
+                            <div class="form-group"><label>¿La niña o el niño tiene hermanos(as)? Si es así, ¿cuántos?</label><input type="number" name="numeroHermanos" min="0" max="20"></div>
+                            <div class="form-group"><label>¿El embarazo del niño o la niña fue planeado?</label>
+                                <select name="embarazoPlaneado">
                                     <option value="">Seleccione...</option>
-                                    <option value="Ninguno">Ninguno</option>
-                                    <option value="Primaria incompleta">Primaria incompleta</option>
-                                    <option value="Primaria completa">Primaria completa</option>
-                                    <option value="Secundaria incompleta">Secundaria incompleta</option>
-                                    <option value="Secundaria completa">Secundaria completa</option>
-                                    <option value="Técnico">Técnico</option>
-                                    <option value="Tecnólogo">Tecnólogo</option>
-                                    <option value="Profesional">Profesional</option>
-                                    <option value="Posgrado">Posgrado</option>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                    <option value="No sabe">No sabe</option>
                                 </select>
                             </div>
-
-                            <div class="form-group">
-                                <label>Ocupación</label>
-                                <input type="text" name="ocupacionMadre">
-                            </div>
                         </div>
                     </div>
 
                     <div class="subsection">
-                        <h3 class="subsection-title">Información del Padre</h3>
-                        
+                        <h3 class="subsection-title">Datos de la Madre</h3>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Documento</label>
-                                <input type="text" name="documentoPadre" placeholder="Número de documento">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Edad</label>
-                                <input type="number" name="edadPadre" min="18" max="100">
-                            </div>
+                            <div class="form-group"><label>Documento</label><input type="text" name="documentoMadre"></div>
+                            <div class="form-group"><label>Edad</label><input type="number" name="edadMadre" min="10" max="100"></div>
                         </div>
-
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Nivel de escolaridad</label>
-                                <select name="escolaridadPadre">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Ninguno">Ninguno</option>
-                                    <option value="Primaria incompleta">Primaria incompleta</option>
-                                    <option value="Primaria completa">Primaria completa</option>
-                                    <option value="Secundaria incompleta">Secundaria incompleta</option>
-                                    <option value="Secundaria completa">Secundaria completa</option>
-                                    <option value="Técnico">Técnico</option>
-                                    <option value="Tecnólogo">Tecnólogo</option>
-                                    <option value="Profesional">Profesional</option>
-                                    <option value="Posgrado">Posgrado</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Ocupación</label>
-                                <input type="text" name="ocupacionPadre">
-                            </div>
+                            <div class="form-group"><label>Nivel de escolaridad</label><input type="text" name="escolaridadMadre"></div>
+                            <div class="form-group"><label>Ocupación</label><input type="text" name="ocupacionMadre"></div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Sabe leer</label><select name="sabeLeerMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                            <div class="form-group"><label>Sabe escribir</label><select name="sabeEscribirMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Situación laboral</label><input type="text" name="situacionLaboralMadre"></div>
+                            <div class="form-group"><label>Aporta al sustento económico</label><select name="aportaEconomicoMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                        </div>
+                        <div class="form-group"><label>Condiciones especiales (ABIERTA)</label><textarea name="condicionesEspecialesMadre"></textarea></div>
                     </div>
 
                     <div class="subsection">
-                        <h3 class="subsection-title">Composición Familiar</h3>
-                        
-                        <div class="form-group">
-                            <label>Número de hermanos</label>
-                            <input type="number" name="numeroHermanos" min="0" max="20">
+                        <h3 class="subsection-title">Datos del Padre</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Documento</label><input type="text" name="documentoPadre"></div>
+                            <div class="form-group"><label>Edad</label><input type="number" name="edadPadre" min="10" max="100"></div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Nivel de escolaridad</label><input type="text" name="escolaridadPadre"></div>
+                            <div class="form-group"><label>Ocupación</label><input type="text" name="ocupacionPadre"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Sabe leer</label><select name="sabeLeerPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                            <div class="form-group"><label>Sabe escribir</label><select name="sabeEscribirPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Situación laboral</label><input type="text" name="situacionLaboralPadre"></div>
+                            <div class="form-group"><label>Aporta al sustento económico</label><select name="aportaEconomicoPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                        </div>
+                        <div class="form-group"><label>Condiciones especiales (ABIERTA)</label><textarea name="condicionesEspecialesPadre"></textarea></div>
+                    </div>
 
-                        <div class="form-group">
-                            <label>Personas en el núcleo familiar</label>
-                            <input type="number" name="personasNucleoFamiliar" min="1" max="30">
+                    <div class="subsection">
+                        <h3 class="subsection-title">Acudiente (si es distinto)</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Parentesco</label><input type="text" name="parentescoAcudiente"></div>
+                            <div class="form-group"><label>Edad</label><input type="number" name="edadAcudiente" min="10" max="100"></div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Nivel de escolaridad</label><input type="text" name="escolaridadAcudiente"></div>
+                            <div class="form-group"><label>Ocupación</label><input type="text" name="ocupacionAcudiente"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Sabe leer</label><select name="sabeLeerAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                            <div class="form-group"><label>Sabe escribir</label><select name="sabeEscribirAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Situación laboral</label><input type="text" name="situacionLaboralAcudiente"></div>
+                            <div class="form-group"><label>Aporta al sustento económico</label><select name="aportaEconomicoAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select></div>
+                        </div>
+                        <div class="form-group"><label>Condiciones especiales (ABIERTA)</label><textarea name="condicionesEspecialesAcudiente"></textarea></div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Vivienda y Habitabilidad</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Tipo de vivienda del hogar</label><input type="text" name="tipoViviendaFamiliar"></div>
+                            <div class="form-group"><label>Tipo de tenencia de la vivienda del hogar</label><input type="text" name="tenenciaVivienda"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Tiempo de permanencia en el barrio/corregimiento (años)</label><input type="number" name="tiempoPermanenciaBarrio" min="0" max="99"></div>
+                            <div class="form-group"><label>Número de personas del núcleo familiar que conviven en la vivienda</label><input type="number" name="personasNucleoFamiliar" min="1" max="40"></div>
+                        </div>
+                        <div class="form-group"><label>Reconoce riesgos que puedan afectar la vivienda (naturales, humanos, sociales)</label><textarea name="riesgosVivienda"></textarea></div>
+                        <div class="form-group"><label>¿La niña o el niño duerme con adultos en la misma habitación?</label><textarea name="duermeHabitacionAdultos"></textarea></div>
+                        <div class="form-group"><label>¿La niña o el niño duerme con adultos en la misma cama?</label><textarea name="duermeCamaAdultos"></textarea></div>
+                        <div class="form-group"><label>¿La vivienda cuenta con espacios independientes para dormitorio, cocina y baños?</label><textarea name="espaciosIndependientes"></textarea></div>
+                        <div class="form-group"><label>¿La vivienda cuenta con espacios aseados?</label><textarea name="espaciosAseados"></textarea></div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3 class="subsection-title">Servicios, Entorno y Relaciones</h3>
+                        <div class="form-group"><label>Servicios domiciliarios (energía, acueducto, alcantarillado, gas, telefonía fija, internet, celular)</label><textarea name="serviciosDomiciliariosDetalle"></textarea></div>
+                        <div class="form-group"><label>Fuente de agua para consumo y preparación de alimentos</label><textarea name="fuenteAgua"></textarea></div>
+                        <div class="form-group"><label>Tratamiento del agua para potabilizarla</label><textarea name="tratamientoAgua"></textarea></div>
+                        <div class="form-group"><label>Tratamiento de basuras</label><textarea name="tratamientoBasuras"></textarea></div>
+                        <div class="form-group"><label>Tipo de sanitario y uso exclusivo/compartido</label><textarea name="sanitarioHogar"></textarea></div>
+                        <div class="form-group"><label>Cerca de la vivienda se cuenta con (vías, sedes educativas, bibliotecas, servicios de salud, transporte, parques, río, lugares sagrados, etc.)</label><textarea name="entornoVivienda"></textarea></div>
+                        <div class="form-group"><label>El núcleo familiar comparte sus dificultades con</label><textarea name="comparteDificultades"></textarea></div>
+                        <div class="form-group"><label>El núcleo familiar comparte sus acontecimientos especiales con</label><textarea name="comparteAcontecimientos"></textarea></div>
+                        <div class="form-group"><label>¿Con quién permanece la niña o el niño cuando sale de la unidad de servicio?</label><textarea name="permaneceCon"></textarea></div>
+                        <div class="form-group"><label>Actividades que realiza el núcleo para fortalecer diálogo y vínculos</label><textarea name="actividadesDialogoVinculos"></textarea></div>
+                        <div class="form-group"><label>Acciones de cuidado de niñas y niños en el núcleo familiar</label><textarea name="accionesCuidadoNucleo"></textarea></div>
+                        <div class="form-group"><label>Motivo más frecuente de disgusto entre adultos del núcleo familiar</label><textarea name="motivoDisgustoAdultos"></textarea></div>
+                        <div class="form-group"><label>¿Cómo intentan solucionar los problemas dentro del núcleo familiar?</label><textarea name="solucionProblemasFamilia"></textarea></div>
+                        <div class="form-group"><label>Participación de niñas y niños en actividades del hogar</label><textarea name="participacionHogar"></textarea></div>
+                        <div class="form-group"><label>Reconocimientos o incentivos por logros</label><textarea name="incentivosLogros"></textarea></div>
                     </div>
                 </div>
 
-                <!-- Botones de navegación -->
                 <div class="button-group">
-                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
-                        ← Anterior
-                    </button>
-                    <button type="button" class="btn btn-primary" id="nextBtn">
-                        Siguiente →
-                    </button>
-                    <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
-                        ☁️ Guardar en Google Sheets
-                    </button>
+                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display:none;">Anterior</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn">Siguiente</button>
+                    <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">Guardar en Google Sheets</button>
+                </div>
+
+                <div class="save-panel" id="savePanel">
+                    <h3>Registro guardado correctamente en la nube</h3>
+                    <p id="savePanelText">La información quedó almacenada correctamente.</p>
+                    <div class="save-actions">
+                        <button type="button" class="btn btn-edit" id="btnEditSaved">Editar este guardado</button>
+                        <button type="button" class="btn btn-another" id="btnCreateAnother">Crear otro registro</button>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
-
-    <script>
-        // ============================================
-        // CONFIGURACIÓN PERMANENTE
-        // ============================================
-        // URL de Google Apps Script (ya configurada)
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZUnnhCw5KiCK1lvPFrTEKkR_JdPNa5Srig6cPA4wccN9uQWuBNBoA_IhY4uYNhBcLag/exec';
-        
-        // Variables globales
-        let currentSection = 1;
-        const totalSections = 3;
-        const form = document.getElementById('caracterizacionForm');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        let contadorRegistros = 0;
-
-        // Cargar URL guardada y ocultar configuración siempre
-        window.addEventListener('load', () => {
-            // La URL ya está hardcodeada en el código como GOOGLE_SCRIPT_URL
-            // No se necesita configuración manual
-        });
-
-        // Cálculo automático de edad
-        document.getElementById('fechaNacimiento').addEventListener('change', function() {
-            const fechaNac = new Date(this.value);
-            const hoy = new Date();
-            let edad = hoy.getFullYear() - fechaNac.getFullYear();
-            const mes = hoy.getMonth() - fechaNac.getMonth();
-            
-            if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
-                edad--;
-            }
-            
-            document.getElementById('edad').value = edad;
-        });
-
-        // Función para mostrar alertas
-        function showAlert(message, type = 'success') {
-            const alertContainer = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} show`;
-            alert.textContent = message;
-            alertContainer.appendChild(alert);
-            
-            setTimeout(() => {
-                alert.classList.remove('show');
-                setTimeout(() => alert.remove(), 300);
-            }, 5000);
-        }
-
-        // Función para buscar estudiante
-        function buscarEstudiante() {
-            const docBusqueda = document.getElementById('searchDoc').value.trim();
-            
-            if (!docBusqueda) {
-                showAlert('⚠️ Ingrese un número de documento', 'danger');
-                return;
-            }
-
-            document.getElementById('loadingIndicator').classList.add('show');
-
-            fetch(GOOGLE_SCRIPT_URL + '?action=search&doc=' + docBusqueda)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('loadingIndicator').classList.remove('show');
-                    if (data.result === 'found') {
-                        // Cargar datos en el formulario
-                        for (let key in data.estudiante) {
-                            const field = form.elements[key];
-                            if (field) {
-                                if (field.type === 'radio') {
-                                    const option = form.querySelector(`[name="${key}"][value="${data.estudiante[key]}"]`);
-                                    if (option) option.checked = true;
-                                } else {
-                                    field.value = data.estudiante[key];
-                                }
-                            }
-                        }
-                        showAlert(`✅ Estudiante encontrado: ${data.estudiante.nombres}`, 'info');
-                    } else {
-                        showAlert('❌ No se encontró estudiante con ese documento', 'danger');
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('loadingIndicator').classList.remove('show');
-                    showAlert('❌ Error al buscar: ' + error.message, 'danger');
-                });
-        }
-
-        // Función para nuevo registro
-        function nuevoRegistro() {
-            form.reset();
-            document.getElementById('searchDoc').value = '';
-            currentSection = 1;
-            showSection(1);
-            showAlert('📝 Formulario limpio para nuevo registro', 'info');
-        }
-
-        // Función para actualizar visualización de secciones
-        function showSection(n) {
-            const sections = document.querySelectorAll('.form-section');
-            const progressSteps = document.querySelectorAll('.progress-step');
-            
-            sections.forEach(section => section.classList.remove('active'));
-            sections[n - 1].classList.add('active');
-            
-            progressSteps.forEach((step, index) => {
-                step.classList.remove('active', 'completed');
-                if (index + 1 < n) {
-                    step.classList.add('completed');
-                } else if (index + 1 === n) {
-                    step.classList.add('active');
-                }
-            });
-            
-            prevBtn.style.display = n === 1 ? 'none' : 'inline-flex';
-            nextBtn.style.display = n === totalSections ? 'none' : 'inline-flex';
-            submitBtn.style.display = n === totalSections ? 'inline-flex' : 'none';
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Validar sección actual
-        function validateCurrentSection() {
-            const currentSectionElement = document.querySelector(`.form-section[data-section="${currentSection}"]`);
-            const requiredFields = currentSectionElement.querySelectorAll('[required]');
-            
-            for (let field of requiredFields) {
-                if (!field.value.trim()) {
-                    field.focus();
-                    showAlert('⚠️ Complete todos los campos obligatorios (*)', 'danger');
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // Navegación
-        nextBtn.addEventListener('click', () => {
-            if (validateCurrentSection()) {
-                currentSection++;
-                showSection(currentSection);
-            }
-        });
-
-        prevBtn.addEventListener('click', () => {
-            currentSection--;
-            showSection(currentSection);
-        });
-
-        // Lógica condicional
-        document.querySelector('[name="tieneDiscapacidad"]').addEventListener('change', (e) => {
-            document.getElementById('categoriaDiscapacidadGroup').style.display = 
-                e.target.value === 'Si' ? 'block' : 'none';
-        });
-
-        document.querySelector('[name="perteneceEtnia"]').addEventListener('change', (e) => {
-            document.getElementById('tipoEtniaGroup').style.display = 
-                e.target.value === 'Si' ? 'block' : 'none';
-        });
-
-        document.addEventListener('change', (e) => {
-            if (e.target.name === 'tipoEtnia') {
-                document.getElementById('puebloIndigenaGroup').style.display = 
-                    e.target.value === 'Indigena' ? 'block' : 'none';
-            }
-        });
-
-        // Manejo del envío a Google Sheets
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            if (!validateCurrentSection()) return;
-
-            const formData = new FormData(form);
-            const estudiante = {};
-            
-            for (let [key, value] of formData.entries()) {
-                estudiante[key] = value;
-            }
-
-            estudiante.fechaRegistro = new Date().toLocaleString('es-CO');
-
-            document.getElementById('loadingIndicator').classList.add('show');
-
-            // Enviar a Google Sheets usando la URL configurada
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(estudiante)
-            })
-            .then(() => {
-                document.getElementById('loadingIndicator').classList.remove('show');
-                contadorRegistros++;
-                document.getElementById('totalEstudiantes').textContent = contadorRegistros;
-                document.getElementById('ultimaActualizacion').textContent = new Date().toLocaleTimeString('es-CO');
-                
-                showAlert('✅ Datos guardados exitosamente en Google Sheets', 'success');
-                
-                setTimeout(() => {
-                    if (confirm('¿Desea registrar otro estudiante?')) {
-                        nuevoRegistro();
-                    }
-                }, 1500);
-            })
-            .catch(error => {
-                document.getElementById('loadingIndicator').classList.remove('show');
-                showAlert('❌ Error al guardar: ' + error.message, 'danger');
-            });
-        });
-
-        // Inicializar
-        showSection(1);
-    </script>
+    <script src="assets/js/app.js" defer></script>
 </body>
 </html>
