@@ -55,29 +55,6 @@ Caracterizacion/
 - `api.js`: integración con Apps Script y fallback de lectura de hoja.
 - `ui.js`: renderizado, alertas, validaciones y actualización de estado visual.
 
-## Configuración
-
-Edita `js/config.js`:
-
-```js
-export const APP_CONFIG = {
-  googleScriptUrl: 'TU_URL_DE_APPS_SCRIPT',
-  sheetId: 'TU_SHEET_ID',
-  sheetGid: '0',
-  sectionIds: ['sec-personal', 'sec-academico', 'sec-familiar'],
-  requiredMessage: 'Completa los campos obligatorios (*) antes de continuar.'
-};
-```
-
-## Ejecución local
-
-Como es una SPA estática, puedes abrir `index.html` directamente. Para desarrollo recomendado:
-
-```bash
-python -m http.server 8000
-```
-
-Luego abre `http://localhost:8000`.
 
 ## Flujo de datos
 
