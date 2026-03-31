@@ -254,6 +254,15 @@ export function createUI(config) {
     });
   }
 
+  function applySuggestion(fieldName, value) {
+    const element = dom.form.elements[fieldName];
+    if (!element) return;
+    element.value = value;
+    element.focus();
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+    element.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
   return {
     dom,
     showAlert,
@@ -269,6 +278,7 @@ export function createUI(config) {
     hideSavePanel,
     validateSection,
     calculateAge,
-    toggleConditional
+    toggleConditional,
+    applySuggestion
   };
 }

@@ -176,6 +176,12 @@ function bindEvents() {
   });
 
   ui.dom.form.addEventListener('input', syncDraft);
+  ui.dom.form.addEventListener('click', (event) => {
+    const chip = event.target.closest('.suggestion-chip');
+    if (!chip) return;
+
+    ui.applySuggestion(chip.dataset.target, chip.dataset.value || '');
+  });
   ui.dom.form.addEventListener('submit', handleSubmit);
 
   ui.dom.searchBtn.addEventListener('click', handleSearch);

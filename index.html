@@ -282,7 +282,10 @@
 
         <section class="form-section" id="sec-academico">
           <h2 class="section-title">Caracterización Académica y Socioemocional</h2>
-          <div class="info-box">Sección para estudiantes (12 a 18 años) del formato oficial.</div>
+          <div class="info-box">
+            Sección para estudiantes (12 a 18 años) del formato oficial. En las preguntas abiertas puedes usar
+            una respuesta sugerida y luego ajustarla si quieres.
+          </div>
 
           <article class="subsection">
             <h3>Académico</h3>
@@ -293,6 +296,15 @@
                 name="entusiasmoMotivacion"
                 placeholder="Ejemplo: aprender cosas nuevas, hacer deporte, bailar, participar en laboratorio, arte o actividades en grupo."
               ></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="entusiasmoMotivacion" data-value="Me entusiasma aprender cosas nuevas y participar en clase.">Aprender y participar</button>
+                  <button class="suggestion-chip" type="button" data-target="entusiasmoMotivacion" data-value="Me motivan mucho el deporte, el arte y las actividades en grupo.">Deporte, arte y grupo</button>
+                  <button class="suggestion-chip" type="button" data-target="entusiasmoMotivacion" data-value="Me anima compartir con mis compañeros y sentirme acompañado por mis profesores.">Compañeros y profesores</button>
+                  <button class="suggestion-chip" type="button" data-target="entusiasmoMotivacion" data-value="Por ahora no identifico algo que me motive mucho en el colegio, pero me gustaría encontrarlo.">Aún no lo tengo claro</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿En qué asignaturas te sientes más fuerte y en cuáles necesitas apoyo?</label>
@@ -301,6 +313,14 @@
                 name="asignaturasFortalezas"
                 placeholder="Escribe dos cosas: 1) asignaturas en las que te va bien, 2) asignaturas en las que necesitas ayuda. Ejemplo: me va bien en matemáticas y necesito apoyo en inglés."
               ></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="asignaturasFortalezas" data-value="Me siento fuerte en matemáticas y ciencias, y necesito apoyo en inglés.">Fortalezas y apoyo 1</button>
+                  <button class="suggestion-chip" type="button" data-target="asignaturasFortalezas" data-value="Me va bien en educación física y artística, y necesito más ayuda en lectura y escritura.">Fortalezas y apoyo 2</button>
+                  <button class="suggestion-chip" type="button" data-target="asignaturasFortalezas" data-value="Me siento estable en varias materias, pero necesito refuerzo para concentrarme y entender algunos temas.">Necesita refuerzo general</button>
+                </div>
+              </div>
             </div>
             <div class="form-group"><label>¿Tienes un lugar adecuado para estudiar en casa?</label>
               <p style="font-size:.92rem; color:#46607d; margin:4px 0 8px;">
@@ -321,22 +341,62 @@
                 name="estrategiasTiempoEscolar"
                 placeholder="Ejemplo: uso agenda para recordar tareas; le pido a mamá, familiar o cuidador que me recuerde; uso tablero, calendario o alarmas."
               ></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="estrategiasTiempoEscolar" data-value="Uso agenda, cuaderno o calendario para recordar tareas y evaluaciones.">Agenda o calendario</button>
+                  <button class="suggestion-chip" type="button" data-target="estrategiasTiempoEscolar" data-value="Me apoyo en alarmas del celular y en recordatorios de mi familia para cumplir con las tareas.">Alarmas y apoyo familiar</button>
+                  <button class="suggestion-chip" type="button" data-target="estrategiasTiempoEscolar" data-value="Todavía me cuesta organizar el tiempo escolar y necesito acompañamiento para hacerlo mejor.">Necesita apoyo</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿Te sientes apoyado/a por tus profesores en tu proceso de aprendizaje?</label>
               <textarea class="textarea" name="apoyoProfesoresDetalle" placeholder="Indica si te sientes apoyado/a o no, y por qué. Ejemplo: sí me explican con paciencia / no porque me cuesta preguntar en clase."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="apoyoProfesoresDetalle" data-value="Sí, me siento apoyado porque mis profesores me explican con paciencia cuando no entiendo.">Sí, con apoyo claro</button>
+                  <button class="suggestion-chip" type="button" data-target="apoyoProfesoresDetalle" data-value="A veces me siento apoyado, pero necesito que me expliquen con más tiempo y seguimiento.">A veces</button>
+                  <button class="suggestion-chip" type="button" data-target="apoyoProfesoresDetalle" data-value="No siempre me siento apoyado porque me cuesta pedir ayuda o expresar mis dudas en clase.">No siempre</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿Sientes que tus intereses y habilidades son valorados en el colegio?</label>
               <textarea class="textarea" name="interesesValorados" placeholder="Escribe si te sientes valorado/a o no. Ejemplo: sí, me tienen en cuenta en deporte/arte; no, siento que mis ideas no son escuchadas."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="interesesValorados" data-value="Sí, siento que valoran mis habilidades y me tienen en cuenta en las actividades que me gustan.">Sí</button>
+                  <button class="suggestion-chip" type="button" data-target="interesesValorados" data-value="A veces siento que valoran mis intereses, pero me gustaría que escucharan más mis ideas.">A veces</button>
+                  <button class="suggestion-chip" type="button" data-target="interesesValorados" data-value="No, siento que mis intereses y habilidades todavía no son muy visibles en el colegio.">No</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿Tienes un adulto en el colegio que te inspire o te oriente en tus metas?</label>
               <textarea class="textarea" name="adultoInspirador" placeholder="Puedes escribir quién es (docente, orientador/a, coordinador/a) o indicar que aún no tienes esa persona."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="adultoInspirador" data-value="Sí, hay un docente u orientador que me escucha y me orienta en mis metas.">Sí, tengo apoyo</button>
+                  <button class="suggestion-chip" type="button" data-target="adultoInspirador" data-value="Tengo cercanía con algunos profesores, aunque todavía no identifico una sola persona de referencia.">Apoyo parcial</button>
+                  <button class="suggestion-chip" type="button" data-target="adultoInspirador" data-value="Por ahora no tengo un adulto en el colegio que me inspire o me oriente de manera cercana.">No por ahora</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿Cómo relacionas lo que aprendes con tu proyecto de vida?</label>
               <textarea class="textarea" name="aprendizajeProyectoVida" placeholder="Ejemplo: las matemáticas me ayudan para ingeniería; lenguaje me ayuda a comunicarme mejor; aún no lo tengo claro."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="aprendizajeProyectoVida" data-value="Relaciono lo que aprendo con mi futuro porque me ayuda a prepararme para la carrera o trabajo que me gustaría tener.">Sí lo relaciona</button>
+                  <button class="suggestion-chip" type="button" data-target="aprendizajeProyectoVida" data-value="Sé que lo que aprendo es importante para mi vida, aunque todavía no tengo definido mi proyecto de vida.">Todavía lo está construyendo</button>
+                  <button class="suggestion-chip" type="button" data-target="aprendizajeProyectoVida" data-value="Aún me cuesta relacionar lo que aprendo en el colegio con mi proyecto de vida y necesito más orientación.">Necesita orientación</button>
+                </div>
+              </div>
             </div>
           </article>
 
@@ -345,10 +405,26 @@
             <div class="form-group">
               <label>¿Qué acciones haces para cuidar tu salud física y emocional?</label>
               <textarea class="textarea" name="accionesSalud" placeholder="Ejemplo: duermo bien, hago ejercicio, hablo con alguien de confianza, practico respiración o actividades que me tranquilizan."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="accionesSalud" data-value="Para cuidarme procuro dormir bien, alimentarme mejor y hacer actividad física.">Hábitos físicos</button>
+                  <button class="suggestion-chip" type="button" data-target="accionesSalud" data-value="Para mi bienestar emocional hablo con personas de confianza y hago actividades que me tranquilizan.">Apoyo emocional</button>
+                  <button class="suggestion-chip" type="button" data-target="accionesSalud" data-value="Reconozco que necesito fortalecer mis hábitos de autocuidado físico y emocional.">Necesita fortalecer autocuidado</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿Sabes qué hacer si alguien vulnera tus derechos o te hace sentir incómodo/a?</label>
               <textarea class="textarea" name="vulneracionDerechos" placeholder="Indica si sabes a quién acudir (docente, orientación escolar, familia, comisaría, línea de ayuda) o si necesitas orientación."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="vulneracionDerechos" data-value="Sí, sé que puedo acudir a mi familia, a un docente o a orientación escolar si alguien vulnera mis derechos.">Sí, sabe a quién acudir</button>
+                  <button class="suggestion-chip" type="button" data-target="vulneracionDerechos" data-value="Sé que debo pedir ayuda, pero necesito más orientación sobre las rutas de atención.">Necesita más orientación</button>
+                  <button class="suggestion-chip" type="button" data-target="vulneracionDerechos" data-value="No lo tengo claro todavía y sería importante recibir información sobre qué hacer y con quién hablar.">No lo tiene claro</button>
+                </div>
+              </div>
             </div>
             <div class="form-group"><label>¿Has recibido orientación sobre derechos sexuales y reproductivos?</label>
               <div class="radio-stack">
@@ -356,30 +432,117 @@
                 <label class="radio-pill"><input type="radio" name="orientacionSexualReproductiva" value="No"> No</label>
               </div>
             </div>
-            <div class="form-group"><label>¿Cómo te informas sobre sexualidad, consentimiento o relaciones?</label><textarea class="textarea" name="informacionSexualidad"></textarea></div>
+            <div class="form-group">
+              <label>¿Cómo te informas sobre sexualidad, consentimiento o relaciones?</label>
+              <textarea class="textarea" name="informacionSexualidad" placeholder="Ejemplo: por orientación escolar, en casa, con personal de salud, en talleres o por internet."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="informacionSexualidad" data-value="Me informo por medio de orientación escolar, talleres o actividades del colegio.">Colegio</button>
+                  <button class="suggestion-chip" type="button" data-target="informacionSexualidad" data-value="Me informo hablando con mi familia o con personas adultas de confianza.">Familia</button>
+                  <button class="suggestion-chip" type="button" data-target="informacionSexualidad" data-value="Me informo por internet o redes, aunque necesito fuentes más confiables y acompañamiento.">Internet</button>
+                </div>
+              </div>
+            </div>
             <div class="form-group">
               <label>¿Sabes a quién acudir si hay riesgo de consumo de SPA (sustancias psicoactivas, por ejemplo alcohol, cigarrillo electrónico, marihuana u otras drogas)?</label>
               <textarea class="textarea" name="riesgoSpa" placeholder="Escribe a quién acudirías: familia, docente, orientación escolar, psicología, centro de salud u otra red de apoyo."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="riesgoSpa" data-value="Sí, acudiría a mi familia, a un docente o a orientación escolar si se presenta un riesgo de consumo.">Sí, acudiría a red cercana</button>
+                  <button class="suggestion-chip" type="button" data-target="riesgoSpa" data-value="Buscaría ayuda en orientación escolar, psicología o en un centro de salud.">Ayuda institucional</button>
+                  <button class="suggestion-chip" type="button" data-target="riesgoSpa" data-value="No tengo claro a quién acudir y necesito conocer mejor las rutas de apoyo.">No lo tiene claro</button>
+                </div>
+              </div>
             </div>
-            <div class="form-group"><label>¿En tu colegio hay espacios para hablar sobre salud mental y autocuidado?</label><textarea class="textarea" name="espaciosSaludMental"></textarea></div>
+            <div class="form-group">
+              <label>¿En tu colegio hay espacios para hablar sobre salud mental y autocuidado?</label>
+              <textarea class="textarea" name="espaciosSaludMental" placeholder="Ejemplo: sí, en orientación o talleres; a veces; no conozco esos espacios."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="espaciosSaludMental" data-value="Sí, en el colegio hay espacios o actividades para hablar sobre salud mental y autocuidado.">Sí</button>
+                  <button class="suggestion-chip" type="button" data-target="espaciosSaludMental" data-value="A veces se generan estos espacios, pero me gustaría que fueran más frecuentes.">A veces</button>
+                  <button class="suggestion-chip" type="button" data-target="espaciosSaludMental" data-value="No conozco espacios claros en el colegio para hablar sobre salud mental y autocuidado.">No / no los conoce</button>
+                </div>
+              </div>
+            </div>
           </article>
 
           <article class="subsection">
             <h3>Socioemocional</h3>
-            <div class="form-group"><label>¿Cómo manejas emociones fuertes como enojo o tristeza?</label><textarea class="textarea" name="manejoEmociones"></textarea></div>
+            <div class="form-group">
+              <label>¿Cómo manejas emociones fuertes como enojo o tristeza?</label>
+              <textarea class="textarea" name="manejoEmociones" placeholder="Ejemplo: hablo con alguien, respiro profundo, me tomo un tiempo o aún me cuesta manejarlo."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="manejoEmociones" data-value="Cuando siento enojo o tristeza hablo con alguien de confianza y trato de calmarme antes de actuar.">Habla y se calma</button>
+                  <button class="suggestion-chip" type="button" data-target="manejoEmociones" data-value="Intento respirar, alejarme un momento o hacer actividades que me ayuden a sentirme mejor.">Usa estrategias de calma</button>
+                  <button class="suggestion-chip" type="button" data-target="manejoEmociones" data-value="Todavía me cuesta manejar emociones fuertes y necesito más apoyo para expresarlas mejor.">Necesita apoyo</button>
+                </div>
+              </div>
+            </div>
             <div class="form-group">
               <label>¿Con quién hablas cuando tienes una dificultad emocional o personal?</label>
               <textarea class="textarea" name="redApoyoEmocional" placeholder="Ejemplo: mamá, papá, acudiente, hermano/a, amigo/a, docente, orientador/a o nadie por ahora."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="redApoyoEmocional" data-value="Cuando tengo una dificultad hablo con mi mamá, papá, acudiente u otro familiar de confianza.">Familia</button>
+                  <button class="suggestion-chip" type="button" data-target="redApoyoEmocional" data-value="Cuando me siento mal hablo con amistades, docentes u orientación escolar.">Colegio y amistades</button>
+                  <button class="suggestion-chip" type="button" data-target="redApoyoEmocional" data-value="Por ahora no hablo con nadie con facilidad cuando tengo una dificultad emocional o personal.">No tiene red clara</button>
+                </div>
+              </div>
             </div>
-            <div class="form-group"><label>¿Sientes que puedes expresar tu identidad en el colegio?</label><textarea class="textarea" name="expresarIdentidad"></textarea></div>
-            <div class="form-group"><label>¿Has identificado una meta personal o profesional para tu futuro?</label><textarea class="textarea" name="metaFutura"></textarea></div>
+            <div class="form-group">
+              <label>¿Sientes que puedes expresar tu identidad en el colegio?</label>
+              <textarea class="textarea" name="expresarIdentidad" placeholder="Ejemplo: sí, me siento libre y respetado/a; a veces; no del todo."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="expresarIdentidad" data-value="Sí, siento que puedo expresar mi identidad en el colegio con respeto y tranquilidad.">Sí</button>
+                  <button class="suggestion-chip" type="button" data-target="expresarIdentidad" data-value="A veces puedo expresarme, pero en algunas situaciones me siento limitado o juzgado.">A veces</button>
+                  <button class="suggestion-chip" type="button" data-target="expresarIdentidad" data-value="No siempre me siento con la confianza suficiente para expresar mi identidad en el colegio.">No siempre</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>¿Has identificado una meta personal o profesional para tu futuro?</label>
+              <textarea class="textarea" name="metaFutura" placeholder="Ejemplo: terminar el bachillerato, estudiar una carrera, trabajar, emprender o aún no lo tengo claro."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="metaFutura" data-value="Sí, quiero terminar mis estudios y seguir preparándome para una profesión o trabajo que me gusta.">Sí, tiene meta</button>
+                  <button class="suggestion-chip" type="button" data-target="metaFutura" data-value="Tengo algunas ideas sobre mi futuro, aunque todavía estoy definiendo una meta más clara.">En construcción</button>
+                  <button class="suggestion-chip" type="button" data-target="metaFutura" data-value="Aún no he identificado una meta personal o profesional clara para mi futuro.">Aún no la define</button>
+                </div>
+              </div>
+            </div>
             <div class="form-group">
               <label>¿Te sientes representado/a y escuchado/a en el colegio?</label>
               <textarea class="textarea" name="representadoEscuchado" placeholder="Puedes responder sí/no y explicar brevemente. Ejemplo: sí, participan mis ideas; no, me cuesta que escuchen mi opinión."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Opciones sugeridas</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="representadoEscuchado" data-value="Sí, siento que mis ideas y opiniones son escuchadas y tenidas en cuenta en el colegio.">Sí</button>
+                  <button class="suggestion-chip" type="button" data-target="representadoEscuchado" data-value="A veces me siento escuchado, pero quisiera más espacios para participar.">A veces</button>
+                  <button class="suggestion-chip" type="button" data-target="representadoEscuchado" data-value="No me siento suficientemente representado o escuchado en el colegio.">No</button>
+                </div>
+              </div>
             </div>
             <div class="form-group">
               <label>¿Qué te gustaría mejorar para sentirte en equilibrio?</label>
               <textarea class="textarea" name="mejorarEquilibrioPersonal" placeholder="Ejemplo: organizar mejor mi tiempo, dormir mejor, manejar el estrés, mejorar convivencia o pedir apoyo emocional."></textarea>
+              <div class="suggestion-box">
+                <p class="suggestion-title">Formas de responder</p>
+                <div class="suggestion-list">
+                  <button class="suggestion-chip" type="button" data-target="mejorarEquilibrioPersonal" data-value="Me gustaría organizar mejor mi tiempo y cumplir con más tranquilidad mis responsabilidades.">Organización</button>
+                  <button class="suggestion-chip" type="button" data-target="mejorarEquilibrioPersonal" data-value="Me gustaría dormir mejor, manejar el estrés y cuidar más mi bienestar emocional.">Salud y bienestar</button>
+                  <button class="suggestion-chip" type="button" data-target="mejorarEquilibrioPersonal" data-value="Me gustaría mejorar mi convivencia, pedir ayuda cuando la necesite y sentirme más tranquilo.">Convivencia y apoyo</button>
+                </div>
+              </div>
             </div>
           </article>
         </section>
@@ -464,7 +627,7 @@
               </div>
             </div>
             <div class="grid-2">
-              <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralMadre"></div>
+              <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralMadre" list="situacionLaboralOpciones" placeholder="Ej: empleada, independiente, desempleada, hogar"></div>
               <div class="form-group"><label>Aporta al sustento económico</label>
                 <select class="select" name="aportaEconomicoMadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
               </div>
@@ -533,7 +696,7 @@
                 </div>
               </div>
               <div class="grid-2">
-                <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralPadre"></div>
+                <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralPadre" list="situacionLaboralOpciones" placeholder="Ej: empleado, independiente, desempleado"></div>
                 <div class="form-group"><label>Aporta al sustento económico</label>
                   <select class="select" name="aportaEconomicoPadre"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
                 </div>
@@ -614,7 +777,7 @@
                 </div>
               </div>
               <div class="grid-2">
-                <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralAcudiente"></div>
+                <div class="form-group"><label>Situación laboral</label><input class="field" type="text" name="situacionLaboralAcudiente" list="situacionLaboralOpciones" placeholder="Ej: empleado, independiente, desempleado"></div>
                 <div class="form-group"><label>Aporta al sustento económico</label>
                   <select class="select" name="aportaEconomicoAcudiente"><option value="">Seleccione...</option><option value="Si">Sí</option><option value="No">No</option></select>
                 </div>
@@ -695,6 +858,16 @@
             </div>
           </article>
         </section>
+
+        <datalist id="situacionLaboralOpciones">
+          <option value="Empleo formal"></option>
+          <option value="Empleo informal"></option>
+          <option value="Independiente"></option>
+          <option value="Desempleado/a"></option>
+          <option value="Hogar"></option>
+          <option value="Jubilado/a"></option>
+          <option value="Trabajo rural o agrícola"></option>
+        </datalist>
 
         <div class="page-actions">
           <button type="button" class="btn btn-soft hidden" id="prevBtn">Anterior</button>
