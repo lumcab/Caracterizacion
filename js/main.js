@@ -1,5 +1,5 @@
 import { setupSummary } from './summary.js';
-import { APP_CONFIG } from './config.js';
+import { APP_CONFIG } from './config.js?v=20260927';
 import { createNavigator } from './navigation.js';
 import { saveRecord } from './api.js';
 import { createUI } from './ui.js';
