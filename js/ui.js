@@ -7,6 +7,7 @@ function normalizeKey(value) {
 }
 
 export function createUI(config) {
+  let lockedFields = [];
   const dom = {
     form: document.getElementById('caracterizacionForm'),
     sections: config.sectionIds.map((id) => document.getElementById(id)),
@@ -40,12 +41,13 @@ export function createUI(config) {
     const alert = document.createElement('div');
     alert.className = `alert alert-${type} show`;
     alert.textContent = message;
+    alert.setAttribute('role', type === 'danger' ? 'alert' : 'status');
     dom.alertContainer.innerHTML = '';
     dom.alertContainer.appendChild(alert);
 
     setTimeout(() => {
       alert.classList.remove('show');
-    }, 4800);
+    }, type === 'danger' || type === 'info' ? 120000 : 8000);
   }
 
   function showSection(index) {
@@ -56,6 +58,7 @@ export function createUI(config) {
     dom.progressItems.forEach((item, i) => {
       item.classList.toggle('active', i === index);
       item.classList.toggle('done', i < index);
+      if (i === index) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
     });
   }
 
@@ -70,8 +73,17 @@ export function createUI(config) {
   }
 
   function setSubmitting(value) {
+    if (value) {
+      lockedFields = Array.from(dom.form.querySelectorAll('input:not(:disabled),select:not(:disabled),textarea:not(:disabled),.suggestion-chip:not(:disabled)'));
+      lockedFields.forEach(field => { field.disabled = true; });
+    } else {
+      lockedFields.forEach(field => { field.disabled = false; });
+      lockedFields = [];
+      toggleConditional();
+    }
+    dom.form.setAttribute('aria-busy', String(value));
     dom.loadingIndicator.classList.toggle('show', value);
-    dom.conexionEstado.textContent = value ? 'Guardando...' : 'Lista';
+    dom.conexionEstado.textContent = value ? 'Confirmando el guardado...' : config.googleScriptUrl ? 'Recepción habilitada' : 'Envío pendiente de habilitar';
     const baseLabel = dom.submitBtn.dataset.baseLabel || 'Guardar Registro';
     dom.submitBtn.textContent = value ? 'Guardando...' : baseLabel;
   }
@@ -102,16 +114,6 @@ export function createUI(config) {
     const checkboxes = dom.form.querySelectorAll('input[type="checkbox"][name]');
     checkboxes.forEach((checkbox) => {
       if (!out[checkbox.name]) out[checkbox.name] = 'No';
-    });
-
-    // Si preguntas abiertas se dejan vacías, enviar "Ninguno".
-    const openFields = dom.form.querySelectorAll('textarea[name], input[type="text"][name], input[type="tel"][name]');
-    openFields.forEach((field) => {
-      if (field.disabled) return;
-      if (field.required) return;
-      const current = out[field.name];
-      if (current !== undefined && String(current).trim() !== '') return;
-      out[field.name] = 'Ninguno';
     });
 
     return out;
@@ -164,11 +166,12 @@ export function createUI(config) {
     });
 
     toggleConditional();
+    dom.form.dispatchEvent(new Event('record-filled'));
   }
 
   function clearForm() {
     dom.form.reset();
-    dom.searchDoc.value = '';
+    if (dom.searchDoc) dom.searchDoc.value = '';
     hideSavePanel();
     toggleConditional();
   }
@@ -176,6 +179,9 @@ export function createUI(config) {
   function showSavePanel(message) {
     dom.savePanelText.textContent = message;
     dom.savePanel.classList.add('show');
+    dom.savePanel.setAttribute('tabindex', '-1');
+    dom.savePanel.focus();
+    dom.savePanel.scrollIntoView({block: 'start'});
   }
 
   function hideSavePanel() {
@@ -184,19 +190,19 @@ export function createUI(config) {
 
   function validateSection(sectionIndex, requiredMessage) {
     const section = dom.sections[sectionIndex];
-    const requiredFields = section.querySelectorAll('[required]');
+    const requiredFields = section.querySelectorAll('input:not(:disabled),select:not(:disabled),textarea:not(:disabled)');
 
     for (const field of requiredFields) {
       if (field.type === 'radio') {
         const checked = section.querySelector(`input[name="${field.name}"]:checked`);
-        if (!checked) {
+        if (field.required && !checked) {
           showAlert(requiredMessage, 'danger');
           return false;
         }
         continue;
       }
 
-      if (!String(field.value || '').trim()) {
+      if (!field.checkValidity() || (field.required && !String(field.value || '').trim())) {
         field.focus();
         showAlert(requiredMessage, 'danger');
         return false;
@@ -221,6 +227,11 @@ export function createUI(config) {
     dom.edad.value = Math.max(age, 0);
   }
 
+  function focusSection() {
+    const heading = dom.sections.find(section => section.classList.contains('active'))?.querySelector('h2');
+    if (heading) { heading.tabIndex = -1; heading.focus(); heading.scrollIntoView({block: 'start'}); }
+  }
+
   function toggleConditional() {
     const discapacidad = dom.form.querySelector('input[name="tieneDiscapacidad"]:checked');
     const etnia = dom.form.querySelector('input[name="perteneceEtnia"]:checked');
@@ -229,10 +240,11 @@ export function createUI(config) {
     const padreNoAplica = dom.form.querySelector('input[name="padreNoAplica"]')?.checked;
     const acudienteNoAplica = dom.form.querySelector('input[name="acudienteNoAplica"]')?.checked;
 
-    dom.categoriaDiscapacidadGroup.classList.toggle('hidden', discapacidad?.value !== 'Si');
-    dom.tipoEtniaGroup.classList.toggle('hidden', etnia?.value !== 'Si');
-    dom.puebloIndigenaGroup.classList.toggle('hidden', tipoEtnia !== 'Indigena');
-    dom.afiliadoSaludCualGroup.classList.toggle('hidden', afiliadoSalud?.value !== 'Si');
+    toggleGroupEnabled(dom.categoriaDiscapacidadGroup, discapacidad?.value === 'Si');
+    toggleGroupEnabled(dom.tipoEtniaGroup, etnia?.value === 'Si');
+    toggleGroupEnabled(dom.puebloIndigenaGroup, etnia?.value === 'Si' && tipoEtnia === 'Indigena');
+    toggleGroupEnabled(dom.afiliadoSaludCualGroup, afiliadoSalud?.value === 'Si');
+    toggleGroupEnabled(document.getElementById('conflictoGroup'), dom.form.elements.victimaConflicto.value === 'Si');
 
     toggleGroupEnabled(dom.padreFields, !padreNoAplica);
     toggleGroupEnabled(dom.acudienteFields, !acudienteNoAplica);
@@ -278,6 +290,7 @@ export function createUI(config) {
     hideSavePanel,
     validateSection,
     calculateAge,
+    focusSection,
     toggleConditional,
     applySuggestion
   };

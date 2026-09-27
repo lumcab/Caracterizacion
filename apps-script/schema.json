@@ -1,0 +1,620 @@
+{
+  "fields": [
+    "anioCaracterizacion",
+    "tipoDocumento",
+    "numeroDocumento",
+    "nombres",
+    "apellidos",
+    "fechaNacimiento",
+    "edad",
+    "sexo",
+    "paisNacimiento",
+    "nacionalidad",
+    "departamentoNacimiento",
+    "municipioNacimiento",
+    "lenguaPrincipal",
+    "lenguaSecundaria",
+    "municipioResidencia",
+    "barrioVereda",
+    "direccionResidencia",
+    "nombreAcudiente",
+    "telefonoAcudiente",
+    "nombreMadre",
+    "telefonoMadre",
+    "nombrePadre",
+    "telefonoPadre",
+    "tipoSangre",
+    "perteneceEtnia",
+    "tipoEtnia",
+    "puebloIndigena",
+    "tieneDiscapacidad",
+    "categoriaDiscapacidad",
+    "afiliadoSalud",
+    "afiliadoSaludCual",
+    "victimaConflicto",
+    "tipoVictimizacion",
+    "institucionEducativa",
+    "gradoEscolar",
+    "tipoVivienda",
+    "servicioEnergia",
+    "servicioAgua",
+    "servicioAlcantarillado",
+    "servicioInternet",
+    "servicioGas",
+    "servicioTelefoniaCelular",
+    "servicioTelefoniaFija",
+    "riesgoTerritorioDerrumbes",
+    "riesgoTerritorioAvalanchas",
+    "riesgoTerritorioInundaciones",
+    "riesgoTerritorioGruposArmados",
+    "riesgoTerritorioOtroCheck",
+    "riesgoTerritorioOtro",
+    "riesgoColegioBullying",
+    "riesgoColegioDesercion",
+    "riesgoColegioBajoRendimiento",
+    "riesgoColegioConvivencia",
+    "riesgoColegioOtroCheck",
+    "riesgoColegioOtro",
+    "entusiasmoMotivacion",
+    "asignaturasFortalezas",
+    "lugarEstudio",
+    "estrategiasTiempoEscolar",
+    "apoyoProfesoresDetalle",
+    "interesesValorados",
+    "adultoInspirador",
+    "aprendizajeProyectoVida",
+    "accionesSalud",
+    "vulneracionDerechos",
+    "orientacionSexualReproductiva",
+    "informacionSexualidad",
+    "riesgoSpa",
+    "espaciosSaludMental",
+    "manejoEmociones",
+    "redApoyoEmocional",
+    "expresarIdentidad",
+    "metaFutura",
+    "representadoEscuchado",
+    "mejorarEquilibrioPersonal",
+    "fechaDiligenciamientoInicial",
+    "numeroHermanos",
+    "embarazoPlaneado",
+    "documentoMadre",
+    "edadMadre",
+    "escolaridadMadre",
+    "ocupacionMadre",
+    "sabeLeerMadre",
+    "sabeEscribirMadre",
+    "situacionLaboralMadre",
+    "aportaEconomicoMadre",
+    "madreCondicionDiscapacidad",
+    "madreCondicionEnfermedad",
+    "madreCondicionNinguna",
+    "madreCondicionOtraCheck",
+    "madreCondicionOtra",
+    "padreNoAplica",
+    "documentoPadre",
+    "edadPadre",
+    "escolaridadPadre",
+    "ocupacionPadre",
+    "sabeLeerPadre",
+    "sabeEscribirPadre",
+    "situacionLaboralPadre",
+    "aportaEconomicoPadre",
+    "padreCondicionDiscapacidad",
+    "padreCondicionEnfermedad",
+    "padreCondicionNinguna",
+    "padreCondicionOtraCheck",
+    "padreCondicionOtra",
+    "acudienteNoAplica",
+    "parentescoAcudiente",
+    "edadAcudiente",
+    "escolaridadAcudiente",
+    "ocupacionAcudiente",
+    "sabeLeerAcudiente",
+    "sabeEscribirAcudiente",
+    "situacionLaboralAcudiente",
+    "aportaEconomicoAcudiente",
+    "acudienteCondicionDiscapacidad",
+    "acudienteCondicionEnfermedad",
+    "acudienteCondicionNinguna",
+    "acudienteCondicionOtraCheck",
+    "acudienteCondicionOtra",
+    "tipoViviendaFamiliar",
+    "tenenciaPropia",
+    "tenenciaArriendo",
+    "tenenciaFamiliar",
+    "tenenciaOtraCheck",
+    "tenenciaOtra",
+    "habitacionConAdultos",
+    "camaConAdultos",
+    "espaciosIndependientesHogar",
+    "espaciosAseadosHogar",
+    "familiarServicioEnergia",
+    "familiarServicioAcueducto",
+    "familiarServicioAlcantarillado",
+    "familiarServicioGas",
+    "familiarServicioInternet",
+    "familiarServicioCelular",
+    "familiarServicioFija",
+    "entornoSalud",
+    "entornoEscuela",
+    "entornoTransporte",
+    "entornoParques",
+    "familiaComparteDificultades",
+    "familiaComparteLogros",
+    "familiaActividadesJuego",
+    "familiaActividadesComunitarias",
+    "familiaMotivoDisgustoEconomico",
+    "familiaMotivoDisgustoComunicacion",
+    "familiaNinosParticipanHogar",
+    "familiaReconoceLogrosNinos"
+  ],
+  "enums": {
+    "tipoDocumento": [
+      "TI",
+      "CC",
+      "NUIP",
+      "CE"
+    ],
+    "sexo": [
+      "M",
+      "F"
+    ],
+    "tipoSangre": [
+      "A+",
+      "A−",
+      "B+",
+      "B−",
+      "AB+",
+      "AB−",
+      "O+",
+      "O−",
+      "No conoce"
+    ],
+    "tipoEtnia": [
+      "Indigena",
+      "Afrodescendiente",
+      "Raizal",
+      "Palenquero",
+      "Gitano"
+    ],
+    "categoriaDiscapacidad": [
+      "Fisica",
+      "Visual",
+      "Auditiva",
+      "Cognitiva",
+      "Psicosocial",
+      "Multiple",
+      "Otra"
+    ],
+    "victimaConflicto": [
+      "Si",
+      "No",
+      "No informa"
+    ],
+    "tipoVictimizacion": [
+      "Desplazamiento forzado",
+      "Otro hecho",
+      "Varios hechos",
+      "No informa"
+    ],
+    "gradoEscolar": [
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "tipoVivienda": [
+      "Casa",
+      "Apartamento",
+      "Finca",
+      "Cuarto",
+      "Otro"
+    ],
+    "numeroHermanos": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4 o más"
+    ],
+    "embarazoPlaneado": [
+      "Si",
+      "No",
+      "No sabe"
+    ],
+    "edadMadre": [
+      "Menor de 20",
+      "20 a 30",
+      "31 a 40",
+      "41 a 50",
+      "51 o más"
+    ],
+    "escolaridadMadre": [
+      "Ninguna",
+      "Primaria",
+      "Secundaria",
+      "Técnica/Tecnológica",
+      "Universitaria"
+    ],
+    "ocupacionMadre": [
+      "Hogar",
+      "Agricultura",
+      "Comercio",
+      "Empleo formal",
+      "Empleo informal",
+      "Otra"
+    ],
+    "sabeLeerMadre": [
+      "Si",
+      "No"
+    ],
+    "sabeEscribirMadre": [
+      "Si",
+      "No"
+    ],
+    "aportaEconomicoMadre": [
+      "Si",
+      "No"
+    ],
+    "edadPadre": [
+      "Menor de 20",
+      "20 a 30",
+      "31 a 40",
+      "41 a 50",
+      "51 o más"
+    ],
+    "escolaridadPadre": [
+      "Ninguna",
+      "Primaria",
+      "Secundaria",
+      "Técnica/Tecnológica",
+      "Universitaria"
+    ],
+    "ocupacionPadre": [
+      "Hogar",
+      "Agricultura",
+      "Comercio",
+      "Empleo formal",
+      "Empleo informal",
+      "Otra"
+    ],
+    "sabeLeerPadre": [
+      "Si",
+      "No"
+    ],
+    "sabeEscribirPadre": [
+      "Si",
+      "No"
+    ],
+    "aportaEconomicoPadre": [
+      "Si",
+      "No"
+    ],
+    "parentescoAcudiente": [
+      "Abuelo/a",
+      "Tío/a",
+      "Hermano/a mayor",
+      "Padrastro/Madrastra",
+      "Otro familiar",
+      "No familiar"
+    ],
+    "edadAcudiente": [
+      "Menor de 20",
+      "20 a 30",
+      "31 a 40",
+      "41 a 50",
+      "51 o más"
+    ],
+    "escolaridadAcudiente": [
+      "Ninguna",
+      "Primaria",
+      "Secundaria",
+      "Técnica/Tecnológica",
+      "Universitaria"
+    ],
+    "ocupacionAcudiente": [
+      "Hogar",
+      "Agricultura",
+      "Comercio",
+      "Empleo formal",
+      "Empleo informal",
+      "Otra"
+    ],
+    "sabeLeerAcudiente": [
+      "Si",
+      "No"
+    ],
+    "sabeEscribirAcudiente": [
+      "Si",
+      "No"
+    ],
+    "aportaEconomicoAcudiente": [
+      "Si",
+      "No"
+    ],
+    "tipoViviendaFamiliar": [
+      "Casa",
+      "Apartamento",
+      "Finca",
+      "Cuarto",
+      "Otro"
+    ],
+    "perteneceEtnia": [
+      "Si",
+      "No"
+    ],
+    "tieneDiscapacidad": [
+      "Si",
+      "No"
+    ],
+    "afiliadoSalud": [
+      "Si",
+      "No"
+    ],
+    "servicioEnergia": [
+      "Si",
+      "No"
+    ],
+    "servicioAgua": [
+      "Si",
+      "No"
+    ],
+    "servicioAlcantarillado": [
+      "Si",
+      "No"
+    ],
+    "servicioInternet": [
+      "Si",
+      "No"
+    ],
+    "servicioGas": [
+      "Si",
+      "No"
+    ],
+    "servicioTelefoniaCelular": [
+      "Si",
+      "No"
+    ],
+    "servicioTelefoniaFija": [
+      "Si",
+      "No"
+    ],
+    "riesgoTerritorioDerrumbes": [
+      "Si",
+      "No"
+    ],
+    "riesgoTerritorioAvalanchas": [
+      "Si",
+      "No"
+    ],
+    "riesgoTerritorioInundaciones": [
+      "Si",
+      "No"
+    ],
+    "riesgoTerritorioGruposArmados": [
+      "Si",
+      "No"
+    ],
+    "riesgoTerritorioOtroCheck": [
+      "Si",
+      "No"
+    ],
+    "riesgoColegioBullying": [
+      "Si",
+      "No"
+    ],
+    "riesgoColegioDesercion": [
+      "Si",
+      "No"
+    ],
+    "riesgoColegioBajoRendimiento": [
+      "Si",
+      "No"
+    ],
+    "riesgoColegioConvivencia": [
+      "Si",
+      "No"
+    ],
+    "riesgoColegioOtroCheck": [
+      "Si",
+      "No"
+    ],
+    "lugarEstudio": [
+      "Si",
+      "No",
+      "A veces"
+    ],
+    "orientacionSexualReproductiva": [
+      "Si",
+      "No"
+    ],
+    "madreCondicionDiscapacidad": [
+      "Si",
+      "No"
+    ],
+    "madreCondicionEnfermedad": [
+      "Si",
+      "No"
+    ],
+    "madreCondicionNinguna": [
+      "Si",
+      "No"
+    ],
+    "madreCondicionOtraCheck": [
+      "Si",
+      "No"
+    ],
+    "padreNoAplica": [
+      "Si",
+      "No"
+    ],
+    "padreCondicionDiscapacidad": [
+      "Si",
+      "No"
+    ],
+    "padreCondicionEnfermedad": [
+      "Si",
+      "No"
+    ],
+    "padreCondicionNinguna": [
+      "Si",
+      "No"
+    ],
+    "padreCondicionOtraCheck": [
+      "Si",
+      "No"
+    ],
+    "acudienteNoAplica": [
+      "Si",
+      "No"
+    ],
+    "acudienteCondicionDiscapacidad": [
+      "Si",
+      "No"
+    ],
+    "acudienteCondicionEnfermedad": [
+      "Si",
+      "No"
+    ],
+    "acudienteCondicionNinguna": [
+      "Si",
+      "No"
+    ],
+    "acudienteCondicionOtraCheck": [
+      "Si",
+      "No"
+    ],
+    "tenenciaPropia": [
+      "Si",
+      "No"
+    ],
+    "tenenciaArriendo": [
+      "Si",
+      "No"
+    ],
+    "tenenciaFamiliar": [
+      "Si",
+      "No"
+    ],
+    "tenenciaOtraCheck": [
+      "Si",
+      "No"
+    ],
+    "habitacionConAdultos": [
+      "Si",
+      "No"
+    ],
+    "camaConAdultos": [
+      "Si",
+      "No"
+    ],
+    "espaciosIndependientesHogar": [
+      "Si",
+      "No"
+    ],
+    "espaciosAseadosHogar": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioEnergia": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioAcueducto": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioAlcantarillado": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioGas": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioInternet": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioCelular": [
+      "Si",
+      "No"
+    ],
+    "familiarServicioFija": [
+      "Si",
+      "No"
+    ],
+    "entornoSalud": [
+      "Si",
+      "No"
+    ],
+    "entornoEscuela": [
+      "Si",
+      "No"
+    ],
+    "entornoTransporte": [
+      "Si",
+      "No"
+    ],
+    "entornoParques": [
+      "Si",
+      "No"
+    ],
+    "familiaComparteDificultades": [
+      "Si",
+      "No"
+    ],
+    "familiaComparteLogros": [
+      "Si",
+      "No"
+    ],
+    "familiaActividadesJuego": [
+      "Si",
+      "No"
+    ],
+    "familiaActividadesComunitarias": [
+      "Si",
+      "No"
+    ],
+    "familiaMotivoDisgustoEconomico": [
+      "Si",
+      "No"
+    ],
+    "familiaMotivoDisgustoComunicacion": [
+      "Si",
+      "No"
+    ],
+    "familiaNinosParticipanHogar": [
+      "Si",
+      "No"
+    ],
+    "familiaReconoceLogrosNinos": [
+      "Si",
+      "No"
+    ]
+  },
+  "required": [
+    "afiliadoSalud",
+    "anioCaracterizacion",
+    "apellidos",
+    "barrioVereda",
+    "fechaNacimiento",
+    "gradoEscolar",
+    "institucionEducativa",
+    "lenguaPrincipal",
+    "municipioResidencia",
+    "nacionalidad",
+    "nombres",
+    "numeroDocumento",
+    "paisNacimiento",
+    "perteneceEtnia",
+    "sexo",
+    "telefonoAcudiente",
+    "tieneDiscapacidad",
+    "tipoDocumento",
+    "tipoVivienda"
+  ]
+}

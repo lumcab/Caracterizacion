@@ -1,80 +1,49 @@
-# Formulario de Caracterización POE
+# Caracterización · I. E. Paulo VI
 
-Aplicación web para diligenciar la caracterización de estudiantes y familias del Plan de Orientación Escolar (POE), con interfaz amigable y estructura modular para mantenimiento profesional.
+Formulario público para familias de estudiantes de sexto a once. Diseño adaptable,
+ficha de consulta del registro en curso y tres secciones de caracterización.
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Google Sheets](https://img.shields.io/badge/Google%20Sheets-34A853?style=for-the-badge&logo=google-sheets&logoColor=white)
+## Privacidad y recepción
 
-## Objetivo
+La página pública no busca estudiantes, no lista registros y no lee Google Sheets.
+Cada apertura empieza con una ficha nueva. No guarda datos personales en localStorage.
+El archivo de Google Drive `caracterizacion` debe permanecer privado.
 
-Facilitar el registro de información de caracterización de forma clara para estudiantes, acudientes y docentes, con almacenamiento en Google Sheets y consulta por documento de identidad.
+**Activación pendiente:** el receptor está implementado en `apps-script/Code.gs`,
+pero falta desplegarlo en la cuenta propietaria y poner su URL en
+`js/config.js`. Hasta entonces el envío permanece deshabilitado.
+El receptor agrega registros nuevos, conserva las filas existentes y permite
+confirmar un envío mediante un identificador aleatorio; no devuelve datos personales.
+La clave documento + año sirve al docente para revisar coincidencias;
+no permite a una familia sobrescribir registros. Los reintentos del mismo envío
+no duplican filas.
 
-## Características principales
+Consultar [las instrucciones de activación](apps-script/INSTALACION.md).
+No anunciar la recepción a las familias hasta comprobar un envío completo en Drive.
 
-- Interfaz por pasos (3 secciones):
-  - Datos del estudiante
-  - Académico y socioemocional
-  - Módulo familiar
-- Diseño moderno, adaptable a celular y escritorio.
-- Guardado en Google Sheets (nube institucional).
-- Búsqueda por número de documento.
-- Indicadores de base de datos:
-  - Total de registros
-  - Último registro/cambio
-- Guardado de borrador local en navegador (protege datos mientras se diligencia).
-- Validaciones de campos obligatorios y lógica condicional (etnia, discapacidad, etc.).
+Los campos nuevos incluyen lugar de nacimiento (país, departamento y municipio),
+dirección, teléfonos de madre/padre/acudiente, grupo sanguíneo, EPS, pertenencia
+étnica, situación frente al conflicto y año escolar.
 
-## Estructura del proyecto
+## Vista local
 
-```text
-Caracterizacion/
-├── index.html
-├── css/
-│   ├── global.css
-│   ├── layout.css
-│   ├── components.css
-│   └── themes.css
-├── js/
-│   ├── config.js
-│   ├── main.js
-│   ├── navigation.js
-│   ├── storage.js
-│   ├── api.js
-│   └── ui.js
-└── README.md
+Ejecutar `python3 -m http.server 8766 --bind 127.0.0.1` y abrir
+`http://127.0.0.1:8766/?preview=1`. La vista previa no envía registros.
+
+## Verificación
+
+```sh
+node tests/recepcion.cjs
+node tests/envio.cjs
 ```
 
-## Descripción de módulos JS
+Las pruebas cubren conservación de filas, validación, reintentos,
+protección frente a fórmulas y confirmación sin exponer datos personales.
+Se revisó la navegación en escritorio y a 390 px de ancho. Estas pruebas locales
+no sustituyen la prueba de recepción con la implementación real de Google.
 
-- `config.js`: configuración general (URL Apps Script, ID de hoja, secciones).
-- `main.js`: inicialización de la app y orquestación de eventos.
-- `navigation.js`: control del flujo por secciones.
-- `storage.js`: borrador local (`localStorage`).
-- `api.js`: integración con Apps Script y fallback de lectura de hoja.
-- `ui.js`: renderizado, alertas, validaciones y actualización de estado visual.
+## Publicación
 
-
-## Flujo de datos
-
-1. Usuario diligencia formulario.
-2. App valida y prepara payload.
-3. App envía datos al Apps Script (`POST`).
-4. Búsqueda y estadísticas se consultan por Apps Script (`GET`) y, si es necesario, usan fallback de lectura de Google Sheets.
-
-## Estado actual
-
-- UI renovada y modular.
-- Código separado por responsabilidades.
-- Compatible con mantenimiento escalable.
-
-## Recomendaciones de despliegue
-
-- Mantener la hoja de cálculo en nube institucional.
-- Publicar Apps Script como Web App con permisos controlados.
-- No exponer credenciales o tokens en frontend.
-
-## Licencia
-
-Uso institucional/educativo según lineamientos del proyecto.
+Repositorio: `lumcab/Caracterizacion`. GitHub Pages sirve la rama `main` desde
+su carpeta raíz en https://lumcab.github.io/Caracterizacion/.
+El código no incluye registros de estudiantes ni credenciales de Google.
